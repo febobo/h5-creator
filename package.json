@@ -1,0 +1,24 @@
+{
+  "name": "creator",
+  "version": "1.0.0",
+  "description": "拖出你的页面",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "webpack-dev-server --hot --inline --progress --colors "
+  },
+  "keywords": [
+    "ui",
+    "creator"
+  ],
+  "author": "febobo",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0"
+  }
+}
