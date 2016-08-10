@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npm test",
-    "start": "webpack-dev-server --hot --inline --progress --colors "
+    "start": "gulp serve",
+    "build": "gulp build"
   },
   "keywords": [
     "ui",
@@ -19,6 +20,10 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-connect": "^5.0.0"
+    "gulp-connect": "^5.0.0",
+    "gulp-inject": "^4.1.0",
+    "gulp-load-plugins": "^1.2.4",
+    "gulp-stylus": "^2.5.0",
+    "wiredep": "^4.0.0"
   }
 }
