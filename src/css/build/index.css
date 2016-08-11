@@ -1,0 +1,84 @@
+.main {
+  display: flex;
+  height: 100%;
+  padding-top: 70px;
+}
+.main .menu {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  background: #f4f4f4;
+}
+.main .menu >div:first-child {
+  width: 100px;
+  border-right: 1px solid #ccc;
+}
+.main .menu >div:first-child div {
+  text-align: center;
+  padding: 18px 0;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  transition: all 1.5s;
+}
+.main .menu >div:first-child div:hover {
+  background: #c7c7c7;
+}
+.main .menu >div:first-child div p {
+  color: #5b667a;
+}
+.main .menu >div:first-child div img {
+  font-size: 30px;
+  margin-bottom: 3px;
+  color: #5b667a;
+}
+.main .menu >div:last-child {
+  flex: 1;
+  border-right: 1px solid #ccc;
+}
+.main .menu >div:last-child ul {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.main .menu >div:last-child ul li {
+  padding: 18px 0;
+  text-align: center;
+  flex: 1;
+}
+.main .menu >div:last-child ul li img {
+  margin-bottom: 3px;
+}
+.main .menu >div:last-child ul li.active {
+  border-bottom: 2px solid #12b0eb;
+}
+.tmp_content {
+  padding: 15px;
+}
+.view-tmp {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.view-tmp .phone {
+  position: relative;
+}
+.view-tmp .phone img {
+  width: 368px;
+  height: 648px;
+}
+.view-tmp .phone div {
+  width: 250px;
+  height: 430px;
+  position: absolute;
+  left: 60px;
+  top: 108px;
+  background: #12b0eb;
+}
+.view-tmp .view_content {
+  overflow-y: scroll;
+}
+.edit_content {
+  padding: 20px;
+  background: #f4f4f4;
+}

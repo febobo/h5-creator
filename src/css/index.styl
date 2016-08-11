@@ -1,1 +1,68 @@
-
+$blue=#12b0eb
+$f4=#f4f4f4
+.main
+		display: flex
+		height: 100%
+		padding-top:70px
+		.menu
+				width:25%
+				// background: #ccc
+				height:100%
+				display: flex
+				background: $f4
+				>div:first-child
+						width:100px
+						border-right:1px solid #ccc
+						div
+								text-align: center
+								padding: 18px 0
+								border-bottom:1px solid #ccc
+								cursor:pointer
+								transition: all 1.5s
+								&:hover
+										background: #c7c7c7
+								p
+										color:#5b667a
+								img
+										font-size: 30px
+										margin-bottom: 3px
+										color:#5b667a
+				>div:last-child
+						flex:1
+						border-right:1px solid #ccc
+						ul
+								width:100%
+								display: flex
+								align-items: center
+								li
+										padding:18px 0
+										img
+												margin-bottom: 3px
+										text-align: center
+										flex:1
+										&.active
+												border-bottom: 2px solid $blue
+.tmp_content
+		padding:15px
+.view-tmp
+		flex:1
+		display: flex
+		align-items: center
+		justify-content: center
+		.phone
+				position: relative;
+				img
+						width: 368px
+						height:648px
+				div
+						width: 250px
+						height:430px
+						position: absolute
+						left:60px
+						top:108px
+						background: $blue
+		.view_content
+				overflow-y: scroll
+.edit_content
+		padding:20px
+		background: $f4
