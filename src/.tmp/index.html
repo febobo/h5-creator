@@ -70,11 +70,11 @@
 					</ul>
 					<div class="tmp_content">
 						<div class="title_temp">
-							<h1 style="margin:5px" type="text">我是标题</h1>
-							<h2 style="margin:5px" type="text">我是标题</h2>
-							<h3 style="margin:5px" type="text">我是标题</h3>
-							<h4 style="margin:5px" type="text">我是标题</h4>
-							<h5 style="margin:5px" type="text">我是标题</h5>
+							<h1 style="margin:5px;text-align:left" key="h1" type="text">我是标题</h1>
+							<h2 style="margin:5px;text-align:right;color:#930" type="text" key="h2">我是标题</h2>
+							<h3 style="margin:5px;text-align:center" type="text" key="h3">我是标题</h3>
+							<h4 style="margin:5px" type="text" key="h4">我是标题</h4>
+							<h5 style="margin:5px" type="text" key="h5">我是标题</h5>
 						</div>
 					</div>
 				</div>
@@ -103,7 +103,9 @@
 					<div class="form-group  has-feedback">
 						<label class="control-label col-sm-3" for="inputSuccess3">Size</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control" id="eleSize" aria-describedby="inputSuccess3Status">
+							<select class="form-control" id="eleSize">
+
+							</select>
 						</div>
 					</div>
 					<div class="form-group  has-feedback">
@@ -129,9 +131,11 @@
 						<label class="control-label col-sm-3" for="inputSuccess3">Align</label>
 						<div class="col-sm-9">
 							<div class="btn-group" role="group" id="eleAlign">
-								<button type="button" class="btn btn-default">Left</button>
-								<button type="button" class="btn btn-default">Middle</button>
-								<button type="button" class="btn btn-default">Right</button>
+								<button type="button" class="btn btn-default" align="left">Left</button>
+								<button type="button" class="btn btn-default" align="center">Center</button>
+								<button type="button" class="btn btn-default"
+								align="right"
+								>Right</button>
 							</div>
 						</div>
 					</div>
@@ -146,8 +150,10 @@
 	< script type = "text/javascript"
 	src = "../../node_modules/bootstrap/dist/js/bootstrap.min.js" >
 </script>
-<!-- inject:js -->
-<script src="/src/js/index.js"></script>
-<!-- endinject -->
+<script type="text/javascript" src="/src/js/sort.js">
+</script>
+<script type="text/javascript" src="/src/js/index.js">
+</script>
+
 
 </html>
