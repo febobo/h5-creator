@@ -13,7 +13,6 @@ var utils = {
 	matchEle : function(origin,target){
 		return $.each(origin, function(k,v){
 			if($(v).attr('key') === target){
-				console.log(222)
 				return $(v)
 			}
 		})
@@ -92,14 +91,15 @@ function checkType(type,ele){
   }
 }
 
-$('.title_temp > *').on('click', function() {
+$('.tmp_content > * > *').on('click', function() {
   $('.view_content').append($(this).clone());
 	lastTarget = $(this).clone();
 	checkType($(this).attr('type'),$(this))
 })
 
-$('.view_content').on('click','*' ,function() {
+$('.view_content').on('click','*' ,function(evt) {
 	lastTarget = $(this);
+	console.log(lastTarget)
 	checkType($(this).attr('type'),$(this))
 })
 
@@ -113,24 +113,99 @@ function createSizeOption(min,max){
 	return str;
 }
 
+// 标题编辑
 var editTitle = {
 	init : function(){
 		this.changeSize();
+		this.changeWeight();
+		this.changeColor();
+		this.changeAlign()
 	},
 	changeSize : function(){
 		$('#eleSize').on('change',function(evt){
-			var fontSize = $('#eleSize :selected').attr('value');
-			console.log(lastTarget,fontSize)
+			var attr = $('#eleSize :selected').val();
 			$(lastTarget).css({
-				fontSize : fontSize
+				fontSize : attr
+			})
+		})
+	},
+	changeWeight : function(){
+		$('#eleFontWeight').on('click',function(evt){
+			var attr = $('#eleFontWeight :selected').val();
+			$(lastTarget).css({
+				fontWeight : attr
+			})
+		})
+	},
+	changeColor : function(){
+		$('#eleColor').on('change',function(evt){
+			var attr = $(this).val();
+			$(lastTarget).css({
+				color : attr
+			})
+		})
+	},
+	changeAlign : function(){
+		$('#eleAlign button').on('click',function(evt){
+			$(this).addClass('btn-success').siblings().removeClass('btn-success');
+			var attr;
+			if($(this).hasClass('btn-success')){
+				attr = $(this).attr('align');
+				console.log(attr)
+			}
+			$(lastTarget).css({
+				textAlign : attr
 			})
 		})
 	}
 }
 
 
-$('#eleSize').html(createSizeOption(12,42))
+// 标题编辑
+var editImage = {
+	init : function(){
+		this.changeUrl();
+	},
+	changeUrl : function(){
+		$('#eleUrl').on('change',function(evt){
+			console.log(222)
+			var file = this.files[0];
+	    if(!/image\/\w+/.test(file.type)){
+	        alert("文件必须为图片！");
+	        return false;
+	    }
+	    var reader = new FileReader();
+	    reader.readAsDataURL(file);
+	    reader.onload = function(e){
+				$(lastTarget).attr('src',e.srcElement.result)
+	    }
+		})
+	}
+}
 
+
+$('#deleteComponent').on('click' , function(){
+	console.log(lastTarget)
+	$(lastTarget).remove();
+})
+
+// view 切换
+$('.typeSelect li').on('click' , function(){
+	var data = $(this).attr('data');
+	$(this).addClass('active').siblings().removeClass('active');
+	var activeSwitch = function(ele){
+		$.each($(ele), function(k,v){
+			if($(v).attr('data') == data){
+				$(v).show().siblings().hide();
+			}
+		})
+	}
+	activeSwitch('.tmp_content >div')
+	activeSwitch('.edit_content >div')
+})
+
+$('#eleSize').html(createSizeOption(12,42))
+editImage.init();
 editTitle.init();
 
 

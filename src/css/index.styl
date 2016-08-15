@@ -5,7 +5,7 @@ $f4=#f4f4f4
 		height: 100%
 		padding-top:70px
 		.menu
-				width:25%
+				width:395px
 				// background: #ccc
 				height:100%
 				display: flex
@@ -18,7 +18,7 @@ $f4=#f4f4f4
 								padding: 18px 0
 								border-bottom:1px solid #ccc
 								cursor:pointer
-								transition: all 1.5s
+								transition: background 1.5s
 								&:hover
 										background: #c7c7c7
 								p
@@ -27,7 +27,7 @@ $f4=#f4f4f4
 										font-size: 30px
 										margin-bottom: 3px
 										color:#5b667a
-				>div:last-child
+				.tep_main
 						flex:1
 						border-right:1px solid #ccc
 						ul
@@ -40,10 +40,16 @@ $f4=#f4f4f4
 												margin-bottom: 3px
 										text-align: center
 										flex:1
+										cursor: pointer
+										transition: background 1.5s
+										&:hover
+												background: #c7c7c7
 										&.active
 												border-bottom: 2px solid $blue
 .tmp_content
 		padding:15px
+		>div
+				transition: display 0.5s
 .view-tmp
 		flex:1
 		display: flex
@@ -51,7 +57,7 @@ $f4=#f4f4f4
 		justify-content: center
 		.phone
 				position: relative;
-				img
+				>img
 						width: 368px
 						height:648px
 				div
@@ -60,9 +66,15 @@ $f4=#f4f4f4
 						position: absolute
 						left:60px
 						top:108px
-						background: $blue
+						background: #e4e4e4
 		.view_content
 				overflow-y: scroll
+				>*:hover
+						border:1px dashed $blue
+						cursor: move
 .edit_content
-		padding:20px
+		padding:10px
 		background: $f4
+		width: 295px
+		.breadcrumb
+				margin-bottom: 0
