@@ -75,7 +75,7 @@
   width: 368px;
   height: 648px;
 }
-.view-tmp .phone div {
+.view-tmp .phone >div {
   width: 250px;
   height: 430px;
   position: absolute;

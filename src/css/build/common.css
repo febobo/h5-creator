@@ -50,6 +50,7 @@ html {
 }
 .header nav ul li {
   display: inline-block;
+  cursor: pointer;
 }
 .header nav ul li a {
   padding: 25px 35px;
