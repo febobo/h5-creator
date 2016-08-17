@@ -40,6 +40,19 @@ var utils = {
 		}
 	}
 }
+
+fetch('/src/js/config.json').then(function(res){
+	return res.json().then(function(json){
+		for(i in json){
+			if(i == 'title'){
+				$.each(json['title'],function(k,v){
+					$('.title_temp').append(v)
+				})
+			}
+		}
+	})
+})
+
 utils.toPercent(254,25)
 // 记录最后一次操作的元素
 var lastTarget;
@@ -137,7 +150,7 @@ function checkType(type,ele){
   }
 }
 
-$('.tmp_content > * > *').on('click', function() {
+$('.tmp_content').on('click',' > * > *', function() {
   $('.view_content').append($(this).clone());
 	// lastTarget = $(this).clone();
 	checkType($(this).attr('type'),this)
@@ -164,7 +177,13 @@ var editTitle = {
 		this.changeSize();
 		this.changeWeight();
 		this.changeColor();
-		this.changeAlign()
+		this.changeAlign();
+		this.changeText();
+	},
+	changeText : function(){
+		$('#eleText').on('input propertychange',function(event){
+			$(lastTarget).text($(this).val());
+		})
 	},
 	changeSize : function(){
 		$('#eleSize').on('change',function(evt){
@@ -285,7 +304,12 @@ editTitle.init();
 var sortable = Sortable.create($('.view_content')[0]);
 
 $('#save').on('click', function(){
-	// console.log($('.view_content').html())
-	utils.storage.set('content',$('.view_content').html())
+	utils.storage.set('content',$('.view_content').html());
+	alert('已保存,下次会默认打开您最后一次保存的记录')
 })
+$('#reset').on('click', function(){
+	$('.view_content').html('');
+	utils.storage.remove('content')
+})
+
 $('.view_content').html(utils.storage.get('content'));
