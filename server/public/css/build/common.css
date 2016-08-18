@@ -34,6 +34,7 @@ html {
   height: 100%;
 }
 .header {
+  background: #fff;
   position: fixed;
   width: 100%;
   border-bottom: 1px solid #ccc;
@@ -49,6 +50,7 @@ html {
 }
 .header nav ul li {
   display: inline-block;
+  cursor: pointer;
 }
 .header nav ul li a {
   padding: 25px 35px;

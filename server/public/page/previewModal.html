@@ -1,0 +1,38 @@
+
+
+<!-- Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">扫描下方二维码</h4>
+      </div>
+      <div class="modal-body">
+				<div id="qrcode" style="text-align: center;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <!-- <button type="button" id="uploadComponent" class="btn btn-primary">确认上传</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	$('#uploadComponent').on('click',function(){
+		utils.fetch('/components/add','post',{
+					"category" : $('#cpCate :checked').val(),
+					"content" : $('#cpContent').val(),
+					"name" : $('#cpName').val()
+		},function(res){
+				$('#myModal').modal('hide')
+				alert('添加成功')
+		},function(msg){
+			  alert(msg)
+		})
+	})
+
+	$('#cpContent').on('input propertychange',function(event){
+		$('.cpView').html($(this).val());
+	})
+</script>
