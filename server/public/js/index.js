@@ -38,10 +38,42 @@ var utils = {
 		remove: function(name) {
 			localStorage.removeItem(name);
 		}
+	},
+	fetch : function(url,method , obj,successCb , errerCb){
+		if(method === 'post'){
+			return fetch(config.url + url,{
+				method : 'post',
+				headers: {
+					"Content-Type": "application/json",
+			  },
+				body : JSON.stringify(obj)
+			}).then(function(res){
+				return res.json().then(function(json){
+					if(json.code){
+						return successCb && successCb(json)
+					}
+					errerCb && errerCb(json.msg)
+				})
+			})
+		}
+		return fetch(config.url + url,{
+			headers: {
+				"Content-Type": "application/json",
+			}
+		}).then(function(res){
+			return res.json().then(function(json){
+				if(json.code){
+					return successCb && successCb(json)
+				}
+				errerCb && errerCb(json.msg)
+			})
+		})
+
 	}
+
 }
 
-fetch('/src/js/config.json').then(function(res){
+fetch('/js/config.json').then(function(res){
 	return res.json().then(function(json){
 		for(i in json){
 			if(i == 'title'){

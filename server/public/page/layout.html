@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title><%= title %></title>
+	<link rel="stylesheet" href="./css/build/bootstrap.min.css">
+	<link rel="stylesheet" href="./css/build/common.css">
+	<link rel="stylesheet" href="./css/build/index.css">
+</head>
+
+<body>
+	<% include ../common/header.html %>
+	<% if (pageId===1) { %>
+	  <% include ./new.html %>
+	<% } %>
+</body>
+
+<script type="text/javascript" src="./js/config.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js">
+</script>
+	<script type="text/javascript"
+	src= "./js/bootstrap.min.js" >
+</script>
+<script type="text/javascript" src="./js/sort.js">
+</script>
+<script type="text/javascript" src="./js/index.js">
+</script>
+
+<% include ./modal.html %>
+</html>

@@ -1,0 +1,184 @@
+<section class="main">
+	<section class="menu">
+		<div>
+			<div>
+				<img src="./static/images/text.png" alt="text">
+				<p>系统模板</p>
+			</div>
+			<div>
+				<img src="./static/images/text.png" alt="text">
+				<p>我的模板</p>
+			</div>
+			<div>
+				<img src="./static/images/text.png" alt="text">
+				<p>模板历史</p>
+			</div>
+		</div>
+		<div class="tep_main">
+			<div>
+				<ul class="typeSelect">
+					<li class="active" data="title">
+						<img src="./static/images/text.png" alt="text">
+						<p>标题</p>
+					</li>
+					<li data="image">
+						<img src="./static/images/image.png" alt="text">
+						<p>图片</p>
+					</li>
+					<li>
+						<img src="./static/images/card.png" alt="text">
+						<p>段落</p>
+					</li>
+					<li>
+						<img src="./static/images/titlecart.png" alt="text">
+						<p>图文</p>
+					</li>
+				</ul>
+				<div class="tmp_content">
+					<div class="title_temp" data="title">
+						<!-- <h1 style="margin:5px;text-align:left" key="h1" type="title">- 我的优点 -</h1>
+						<h2 style="margin:5px;" type="title" key="h2">- 买手推荐 -</h2>
+						<h3 style="margin:5px;text-align:center" type="title" key="h3">我是标题</h3>
+						<h4 style="margin:5px" type="title" key="h4">我是标题</h4>
+						<h5 style="margin:5px" type="title" key="h5">我是标题</h5> -->
+					</div>
+					<div class="image_temp" data="image" style="display:none">
+						<div style="width:100%;padding:5px" type="image" key="img1">
+							<img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2588862075,4117237517&fm=116&gp=0.jpg" alt="" style="width:100%;">
+						</div>
+						<div style="width:100%;padding:5px" type="image" key="img2">
+							<!-- <img src="" alt="https://ss0.baidu.com/73x1bjeh1BF3odCf/it/u=579524333,4021633840&fm=73"> -->
+							<img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1476836906,2540815395&fm=116&gp=0.jpg" alt="" style="width:100%;padding:5px">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="view-tmp">
+		<!-- <div>
+			<span>预览</span>
+			<span>在手机上查看</span>
+		</div> -->
+		<div class="phone">
+			<img src='./static/images/iphone.png' alt="phone">
+			<div class="view_content" contenteditable="true">
+			</div>
+		</div>
+	</section>
+	<section class="edit_content">
+		<!-- <div>请点击左侧列表</div> -->
+		<div class="edit_text" data="title">
+			<div>
+				<ol class="breadcrumb">
+					<li><a>系统模板</a></li>
+					<li class="active">标题</li>
+				</ol>
+			</div>
+			<form class="form-horizontal">
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Text</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="eleText" aria-describedby="inputSuccess3Status">
+					</div>
+				</div>
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Size</label>
+					<div class="col-sm-9">
+						<select class="form-control" id="eleSize">
+
+						</select>
+					</div>
+				</div>
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Weight</label>
+					<div class="col-sm-9">
+						<!-- <input type="text" class="form-control" id="inputSuccess3" aria-describedby="inputSuccess3Status"> -->
+						<select class="form-control" id="eleFontWeight">
+							<option value="200">200</option>
+							<option value="300">300 </option>
+							<option value="400">400 Normal</option>
+							<option value="500">500 </option>
+							<option value="600">600 Blod</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Color</label>
+					<div class="col-sm-9">
+						<input type="color" class="form-control" id="eleColor" aria-describedby="inputSuccess3Status">
+					</div>
+				</div>
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Align</label>
+					<div class="col-sm-9">
+						<div class="btn-group" role="group" id="eleAlign">
+							<button type="button" class="btn btn-default" align="left">Left</button>
+							<button type="button" class="btn btn-default" align="center">Center</button>
+							<button type="button" class="btn btn-default" align="right">Right</button>
+						</div>
+					</div>
+				</div>
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Operation</label>
+					<div class="col-sm-9">
+						<div class="btn-group" role="group" id="eleAlign">
+							<button type="button" class="btn btn-danger deleteComponent" class="">Delete</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="edit_image" data="image" style="display:none">
+			<div>
+				<ol class="breadcrumb">
+					<li><a>系统模板</a></li>
+					<li class="active">图片</li>
+				</ol>
+			</div>
+			<form class="form-horizontal">
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Url</label>
+					<div class="col-sm-9">
+						<input type="file" class="form-control" id="eleUrl" aria-describedby="inputSuccess3Status">
+					</div>
+				</div>
+
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Width</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="imageWidth" aria-describedby="inputSuccess3Status" placeholder="100%"
+						onpropertychange="onImageWidth(event)"
+						>
+					</div>
+				</div>
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Height</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="imageHeight" placeholder="auto"
+						onpropertychange="onImageHeight(event)"
+						>
+					</div>
+				</div>
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Align</label>
+					<div class="col-sm-9">
+						<div class="btn-group" role="group" id="imageAlign">
+							<button type="button" class="btn btn-default" align="left">Left</button>
+							<button type="button" class="btn btn-default" align="center">Center</button>
+							<button type="button" class="btn btn-default" align="right">Right</button>
+						</div>
+					</div>
+				</div>
+				<div class="form-group  has-feedback">
+					<label class="control-label col-sm-3" for="inputSuccess3">Operation</label>
+					<div class="col-sm-9">
+						<div class="btn-group" role="group" id="eleAlign">
+							<button type="button" class="btn btn-danger  deleteComponent" class="">Delete</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+</section>
