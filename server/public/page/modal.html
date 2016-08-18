@@ -52,7 +52,7 @@
 <script>
 	$('#uploadComponent').on('click',function(){
 		utils.fetch('/components/add','post',{
-					"type" : $('#cpCate :checked').val(),
+					"category" : $('#cpCate :checked').val(),
 					"content" : $('#cpContent').val(),
 					"name" : $('#cpName').val()
 		},function(res){

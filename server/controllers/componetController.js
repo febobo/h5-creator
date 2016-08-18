@@ -4,7 +4,7 @@ exports.add = function * (){
 	var ctx = this;
 	var body = ctx.request.body;
 	console.log(body)
-	if(!body.name || !body.type || !body.content){
+	if(!body.name || !body.category || !body.content){
 		return this.body = {
 			code : 0,
 			msg : '缺少必要信息'

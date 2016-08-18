@@ -50,7 +50,7 @@ var utils = {
 			}).then(function(res){
 				return res.json().then(function(json){
 					if(json.code){
-						return successCb && successCb(json)
+						return successCb && successCb(json.data)
 					}
 					errerCb && errerCb(json.msg)
 				})
@@ -345,3 +345,19 @@ $('#reset').on('click', function(){
 })
 
 $('.view_content').html(utils.storage.get('content'));
+
+
+$('#phoneView').on('click',function(){
+	if(!$('.view_content').html()) return ;
+	utils.fetch('/page/preview','post',{
+				"create_time" : new Date(),
+				"content" : $('.view_content').html(),
+				"name" : ''
+	},function(res){
+			$('#previewModal').modal('show')
+			$('#qrcode').empty().qrcode({width: 200,height: 200,text: res.link});
+	},function(msg){
+		  alert(msg)
+	})
+
+})

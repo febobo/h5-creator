@@ -56,10 +56,19 @@
 		</div>
 	</section>
 	<section class="view-tmp">
-		<!-- <div>
-			<span>预览</span>
-			<span>在手机上查看</span>
-		</div> -->
+		<div class="watch_demo">
+			<span></span>
+			<span></span>
+			<div class="btn-group" role="group" aria-label="...">
+				<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-tag" style="margin-right:3px;"></span>保 存</button>
+				<button type="button" class="btn btn-default">
+					<span class="glyphicon  glyphicon-sunglasses" style="margin-right:3px;"></span> 撤 消</button>
+				<button type="button" class="btn btn-default" id="phoneView"  data-target="#previewModal">
+					<span class="glyphicon  glyphicon-phone" style="margin-right:3px;"></span>
+					在手机上查看
+				</button>
+			</div>
+		</div>
 		<div class="phone">
 			<img src='./static/images/iphone.png' alt="phone">
 			<div class="view_content" contenteditable="true">
@@ -147,17 +156,13 @@
 				<div class="form-group  has-feedback">
 					<label class="control-label col-sm-3" for="inputSuccess3">Width</label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" id="imageWidth" aria-describedby="inputSuccess3Status" placeholder="100%"
-						onpropertychange="onImageWidth(event)"
-						>
+						<input type="text" class="form-control" id="imageWidth" aria-describedby="inputSuccess3Status" placeholder="100%" onpropertychange="onImageWidth(event)">
 					</div>
 				</div>
 				<div class="form-group  has-feedback">
 					<label class="control-label col-sm-3" for="inputSuccess3">Height</label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" id="imageHeight" placeholder="auto"
-						onpropertychange="onImageHeight(event)"
-						>
+						<input type="text" class="form-control" id="imageHeight" placeholder="auto" onpropertychange="onImageHeight(event)">
 					</div>
 				</div>
 				<div class="form-group  has-feedback">
