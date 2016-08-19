@@ -71,6 +71,7 @@
   background: #f4f4f4;
   width: 100%;
   top: 1px;
+  z-index: 2;
 }
 .view-tmp {
   flex: 1;

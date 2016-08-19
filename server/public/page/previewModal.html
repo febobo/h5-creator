@@ -10,6 +10,7 @@
       </div>
       <div class="modal-body">
 				<div id="qrcode" style="text-align: center;"></div>
+				<div class="text-center">在线地址: <a id="prevlink" style="color:#12b0eb" target="_blank"></a></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -19,20 +20,20 @@
   </div>
 </div>
 <script>
-	$('#uploadComponent').on('click',function(){
-		utils.fetch('/components/add','post',{
-					"category" : $('#cpCate :checked').val(),
-					"content" : $('#cpContent').val(),
-					"name" : $('#cpName').val()
-		},function(res){
-				$('#myModal').modal('hide')
-				alert('添加成功')
-		},function(msg){
-			  alert(msg)
-		})
-	})
-
-	$('#cpContent').on('input propertychange',function(event){
-		$('.cpView').html($(this).val());
-	})
+	// $('#uploadComponent').on('click',function(){
+	// 	utils.fetch('/components/add','post',{
+	// 				"category" : $('#cpCate :checked').val(),
+	// 				"content" : $('#cpContent').val(),
+	// 				"name" : $('#cpName').val()
+	// 	},function(res){
+	// 			$('#myModal').modal('hide')
+	// 			alert('添加成功')
+	// 	},function(msg){
+	// 		  alert(msg)
+	// 	})
+	// })
+	//
+	// $('#cpContent').on('input propertychange',function(event){
+	// 	$('.cpView').html($(this).val());
+	// })
 </script>

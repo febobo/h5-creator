@@ -9,4 +9,5 @@ module.exports = function(router){
 	router.get('/components/get',Components.get)
 	router.post('/components/add',Components.add)
 	router.post('/page/preview',Page.preview)
+	router.get('/page/preview',Page.getPagelist)
 }
