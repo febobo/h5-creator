@@ -3,11 +3,26 @@ var pageModel = require('../model/page');
 exports.preview = function * (){
 	var ctx = this;
 	var body = ctx.request.body;
-	console.log(ctx.ip,ctx.ips)
 	if(!body.content){
 		return this.body = {
 			code : 0,
 			msg : '内容不能为空'
+		}
+	}
+
+	var pageContent;
+	if(body.id){
+		pageContent	= yield pageModel.findOne({"_id":body.id});
+		pageContent.content = body.content;
+		pageContent.save();
+		return this.body = {
+			code : 1,
+			data : {
+				content : pageContent.content,
+				id : pageContent._id,
+				link : 'http://192.168.1.52:3001/preview?id=' + pageContent._id,
+				title : pageContent.title
+			}
 		}
 	}
 
@@ -18,8 +33,26 @@ exports.preview = function * (){
 		data : {
 			content : newObj.content,
 			id : newObj._id,
-			link : ctx.request.origin.replace(/(127.0.0.1)/,'192.168.1.52') + '/preview?id=' + newObj._id,
+			link : 'http://192.168.1.52:3001/preview?id=' + newObj._id,
 			title : newObj.title
+		}
+	}
+}
+
+exports.getPagelist = function * (){
+	var ctx = this;
+	var body = ctx.request.query;
+	var pageContent;
+	if(body.id){
+		pageContent	= yield pageModel.findOne({"_id":body.id});
+		return this.body = {
+			code : 1,
+			data : {
+				content : pageContent.content,
+				id : pageContent._id,
+				link : 'http://192.168.1.52:3001/preview?id=' + pageContent._id,
+				title : pageContent.title
+			}
 		}
 	}
 }
