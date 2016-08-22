@@ -7,10 +7,21 @@
 
 # Install
 ```
-$ git clone https://github.com/febobo/h5-creator/edit/master/README.md
+$ git clone https://github.com/febobo/h5-creator.git
 ```
 
-```$ npm install && npm start```   
+# step1
+```$ npm install```   
 
-open your browser ```localhost:8000```
+# step2
+```
+$ Enabled mongodb
+```
+[mongodb doc](https://docs.mongodb.com/manual/installation/)
+
+# step3 
+```
+$ cd server && node app
+```
+open your browser ```localhost:3001```
 
