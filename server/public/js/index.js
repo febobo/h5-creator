@@ -70,7 +70,7 @@ var utils = {
       })
     })
   },
-  getQueryString : function(name) {
+  getQueryString: function(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]);
@@ -81,27 +81,27 @@ var utils = {
 // 拉取元件
 utils.fetch('/components/get', 'get', '', function(res) {
   $.each(res.list, function(k, v) {
-		switch (v.category) {
-			case 'title':
-				$('.title_temp').append(v.content)
-				break;
-			case 'image':
-				$('.image_temp').append(v.content)
-				break;
-			default:
-		}
+    switch (v.category) {
+      case 'title':
+        $('.title_temp').append(v.content)
+        break;
+      case 'image':
+        $('.image_temp').append(v.content)
+        break;
+      default:
+    }
   })
 })
 
 // 如果首次url中存在id则拉取数据
-if(utils.getQueryString('id')){
-	utils.fetch('/page/preview?id=' + utils.getQueryString('id'), 'get', '', function(res) {
-		$('.view_content').html(res.content)
-	})
+if (utils.getQueryString('id')) {
+  utils.fetch('/page/preview?id=' + utils.getQueryString('id'), 'get', '', function(res) {
+    $('.view_content').html(res.content)
+  })
 }
 
 utils.toPercent(254, 25)
-// 记录最后一次操作的元素
+  // 记录最后一次操作的元素
 var lastTarget;
 Fill = function(type, ele) {
   this.ele = ele
@@ -368,7 +368,7 @@ $('#phoneView').on('click', function() {
     "create_time": new Date(),
     "content": $('.view_content').html(),
     "name": '',
-    "id" : utils.getQueryString('id')
+    "id": utils.getQueryString('id')
   }, function(res) {
     window.history.pushState(null, null, '?id=' + res.id);
     $('#previewModal').modal('show')
@@ -382,3 +382,47 @@ $('#phoneView').on('click', function() {
     alert(msg)
   })
 })
+
+
+//  左侧tab切换
+$('.slide_tab > div').on('click', function() {
+  var _this = this;
+  $.each($('.tep_main > div'), function(k, v) {
+    if ($(v).attr('data') == $(_this).attr('data')) {
+      $(v).show().siblings().hide();
+    }
+  })
+})
+
+var initTmp = {
+  init: function() {
+    this.initHistory();
+		this.autoCompute();
+  },
+  initHistory: function() {
+    utils.fetch('/page/preview', 'get', '', function(res) {
+      console.log(res)
+      var str = '';
+      $.each(res.lists, function(k, v) {
+        str += '<li data-id="'+v._id+'"> <span >'+v.name+'</span> <span>'+v.create_time+'</span> </li>'
+      })
+      $('#history_list_content').html(str);
+			$('#history_list_content').on('click' , 'li' , function(){
+				var _id = $(this).attr('data-id')
+				utils.fetch('/page/preview?id='+_id, 'get', '', function(res) {
+					$('.view_content').html(res.content)
+				})
+			})
+    }, function(msg) {
+      alert(msg)
+    })
+  },
+	autoCompute : function(){
+		var h = $(window).height() - $('.header').height() - 60 + 'px';
+		$('.history_list').css({
+			height : h,
+			overflowY : 'scroll'
+		})
+	}
+}
+initTmp.init();

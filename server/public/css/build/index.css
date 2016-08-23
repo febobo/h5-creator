@@ -35,25 +35,25 @@
   flex: 1;
   border-right: 1px solid #ccc;
 }
-.main .menu .tep_main ul {
+.main .menu .tep_main ul.typeSelect {
   width: 100%;
   display: flex;
   align-items: center;
 }
-.main .menu .tep_main ul li {
+.main .menu .tep_main ul.typeSelect li {
   padding: 18px 0;
   text-align: center;
   flex: 1;
   cursor: pointer;
   transition: background 1.5s;
 }
-.main .menu .tep_main ul li img {
+.main .menu .tep_main ul.typeSelect li img {
   margin-bottom: 3px;
 }
-.main .menu .tep_main ul li:hover {
+.main .menu .tep_main ul.typeSelect li:hover {
   background: #c7c7c7;
 }
-.main .menu .tep_main ul li.active {
+.main .menu .tep_main ul.typeSelect li.active {
   border-bottom: 2px solid #12b0eb;
 }
 .tmp_content {
@@ -109,4 +109,10 @@
 }
 .edit_content .breadcrumb {
   margin-bottom: 0;
+}
+.history_list ul li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
 }

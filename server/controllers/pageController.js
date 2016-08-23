@@ -20,7 +20,7 @@ exports.preview = function * (){
 			data : {
 				content : pageContent.content,
 				id : pageContent._id,
-				link : 'http://192.168.1.52:3001/preview?id=' + pageContent._id,
+				link : 'http://192.168.1.10:3001/preview?id=' + pageContent._id,
 				title : pageContent.title
 			}
 		}
@@ -33,7 +33,7 @@ exports.preview = function * (){
 		data : {
 			content : newObj.content,
 			id : newObj._id,
-			link : 'http://192.168.1.52:3001/preview?id=' + newObj._id,
+			link : 'http://192.168.1.10:3001/preview?id=' + newObj._id,
 			title : newObj.title
 		}
 	}
@@ -50,9 +50,18 @@ exports.getPagelist = function * (){
 			data : {
 				content : pageContent.content,
 				id : pageContent._id,
-				link : 'http://192.168.1.52:3001/preview?id=' + pageContent._id,
+				link : 'http://192.168.1.10:3001/preview?id=' + pageContent._id,
 				title : pageContent.title
 			}
+		}
+	}
+
+	const result = yield pageModel.find({});
+	return this.body = {
+		code : 1,
+		data : {
+			lists : result || [],
+			count : result.length || 0
 		}
 	}
 }
