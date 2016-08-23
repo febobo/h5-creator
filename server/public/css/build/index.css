@@ -110,9 +110,25 @@
 .edit_content .breadcrumb {
   margin-bottom: 0;
 }
+#history_tmp .panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .history_list ul li {
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  padding: 5px 0;
+  border-bottom: 1px dashed #ccc;
+}
+.history_list ul li:hover {
+  background: #f4f4f4;
+}
+.history_list .page_btn {
+  text-align: center;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
 }

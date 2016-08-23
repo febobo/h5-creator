@@ -348,7 +348,7 @@ $('#eleSize').html(createSizeOption(12, 42))
 editImage.init();
 editTitle.init();
 
-var sortable = Sortable.create($('.view_content')[0]);
+var sortable = Sortable.create($('.view_content')[0]);
 
 $('#save').on('click', function() {
   utils.storage.set('content', $('.view_content').html());
@@ -394,35 +394,59 @@ $('.slide_tab > div').on('click', function() {
   })
 })
 
+var history_page = 0;
 var initTmp = {
   init: function() {
     this.initHistory();
-		this.autoCompute();
+    this.autoCompute();
+    this.bindOnce();
+    this.prevPage();
+    this.nextPage();
   },
-  initHistory: function() {
-    utils.fetch('/page/preview', 'get', '', function(res) {
+  prevPage: function(page) {
+    $('.prev').on('click', function() {
+      console.log(this, 11)
+      initTmp.initHistory(--history_page)
+    })
+  },
+  nextPage: function(page) {
+    $('.next').on('click', function() {
+      initTmp.initHistory(++history_page);
+    })
+  },
+  initHistory: function(page) {
+    if (page && page <= 0) {
+      return alert('前面没有了噢')
+    }
+    if (page && page > Math.floor($('#history_list_count').text() / 20)) {
+      return alert('后面没有更多了噢')
+    }
+    utils.fetch('/page/preview?page=' + page, 'get', '', function(res) {
       console.log(res)
+      $('#history_list_count').text(res.count)
       var str = '';
       $.each(res.lists, function(k, v) {
-        str += '<li data-id="'+v._id+'"> <span >'+v.name+'</span> <span>'+v.create_time+'</span> </li>'
+        str += '<li data-id="' + v._id + '"> <span >' + v.name + '</span> <span>' + v.create_time + '</span> </li>'
       })
       $('#history_list_content').html(str);
-			$('#history_list_content').on('click' , 'li' , function(){
-				var _id = $(this).attr('data-id')
-				utils.fetch('/page/preview?id='+_id, 'get', '', function(res) {
-					$('.view_content').html(res.content)
-				})
-			})
     }, function(msg) {
       alert(msg)
     })
   },
-	autoCompute : function(){
-		var h = $(window).height() - $('.header').height() - 60 + 'px';
-		$('.history_list').css({
-			height : h,
-			overflowY : 'scroll'
-		})
-	}
+  bindOnce: function() {
+    $('#history_list_content').on('click', 'li', function() {
+      var _id = $(this).attr('data-id')
+      utils.fetch('/page/preview?id=' + _id, 'get', '', function(res) {
+        $('.view_content').html(res.content)
+      })
+    })
+  },
+  autoCompute: function() {
+    var h = $(window).height() - $('.header').height() - 60 + 'px';
+    $('.history_list').css({
+      height: h,
+      overflowY: 'scroll'
+    })
+  }
 }
 initTmp.init();

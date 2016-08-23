@@ -56,7 +56,8 @@
 			<div data="history" id="history_tmp" style="display:none">
 				<div class="panel panel-default">
 				  <!-- Default panel contents -->
-				  <div class="panel-heading" style="height:60px;line-height:42px;">模板历史</div>
+				  <div class="panel-heading" style="height:60px;line-height:42px;">
+						<h3>模板历史</h3><span>总条数:<span id="history_list_count"></span></span></div>
 				  <div class="panel-body history_list">
 				    <ul id="history_list_content">
 				    	<li>
@@ -64,6 +65,10 @@
 								<span>时间:2017-03-13</span>
 							</li>
 				    </ul>
+						<div class="btn-group page_btn" role="group" aria-label="...">
+						  <button type="button" class="btn btn-default prev" >prev</button>
+						  <button type="button" class="btn btn-default next">next</button>
+						</div>
 				  </div>
 				</div>
 			</div>
