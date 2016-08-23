@@ -205,6 +205,8 @@ $('.tmp_content').on('click', ' > * > *', function() {
 
 $('.view_content').on('click', '*', function(evt) {
 	console.log(evt.target,evt.target.nodeName,evt)
+	var styles = utils.getCss($(evt.target)[0]);
+	console.log(styles)
 	evt.stopPropagation();
   lastTarget = $(this);
   checkType($(this).attr('type'), this)
