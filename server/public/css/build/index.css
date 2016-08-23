@@ -110,12 +110,14 @@
 .edit_content .breadcrumb {
   margin-bottom: 0;
 }
-#history_tmp .panel-heading {
+#history_tmp .panel-heading,
+#components_tmp .panel-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.history_list ul li {
+.history_list ul li,
+.components_list ul li {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -123,10 +125,12 @@
   padding: 5px 0;
   border-bottom: 1px dashed #ccc;
 }
-.history_list ul li:hover {
+.history_list ul li:hover,
+.components_list ul li:hover {
   background: #f4f4f4;
 }
-.history_list .page_btn {
+.history_list .page_btn,
+.components_list .page_btn {
   text-align: center;
   padding: 10px;
   display: flex;

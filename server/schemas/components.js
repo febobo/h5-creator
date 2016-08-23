@@ -9,7 +9,8 @@ const ComponentSchema = new mongoose.Schema({
 	},
 	category : {
 		type : String
-	}
+	},
+	create_time : Date
 })
 
 ComponentSchema.statics = {

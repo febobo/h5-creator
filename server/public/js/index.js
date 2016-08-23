@@ -80,7 +80,7 @@ var utils = {
 
 // 拉取元件
 utils.fetch('/components/get', 'get', '', function(res) {
-  $.each(res.list, function(k, v) {
+  $.each(res.lists, function(k, v) {
     switch (v.category) {
       case 'title':
         $('.title_temp').append(v.content)
@@ -204,6 +204,8 @@ $('.tmp_content').on('click', ' > * > *', function() {
 })
 
 $('.view_content').on('click', '*', function(evt) {
+	console.log(evt.target,evt.target.nodeName,evt)
+	evt.stopPropagation();
   lastTarget = $(this);
   checkType($(this).attr('type'), this)
 })
@@ -348,7 +350,7 @@ $('#eleSize').html(createSizeOption(12, 42))
 editImage.init();
 editTitle.init();
 
-var sortable = Sortable.create($('.view_content')[0]);
+var sortable =  Sortable.create($('.view_content')[0]);
 
 $('#save').on('click', function() {
   utils.storage.set('content', $('.view_content').html());
@@ -395,7 +397,7 @@ $('.slide_tab > div').on('click', function() {
 })
 
 var history_page = 0;
-var initTmp = {
+var initHistoryTmp = {
   init: function() {
     this.initHistory();
     this.autoCompute();
@@ -404,14 +406,14 @@ var initTmp = {
     this.nextPage();
   },
   prevPage: function(page) {
-    $('.prev').on('click', function() {
+    $('.history_list .prev').on('click', function() {
       console.log(this, 11)
-      initTmp.initHistory(--history_page)
+      initHistoryTmp.initHistory(--history_page)
     })
   },
   nextPage: function(page) {
-    $('.next').on('click', function() {
-      initTmp.initHistory(++history_page);
+    $('.history_list .next').on('click', function() {
+      initHistoryTmp.initHistory(++history_page);
     })
   },
   initHistory: function(page) {
@@ -449,4 +451,61 @@ var initTmp = {
     })
   }
 }
-initTmp.init();
+initHistoryTmp.init();
+
+var component_page = 0;
+var initComponentTmp = {
+  init: function() {
+    this.initHistory();
+    this.autoCompute();
+    this.bindOnce();
+    this.prevPage();
+    this.nextPage();
+  },
+  prevPage: function(page) {
+    $('.components_list .prev').on('click', function() {
+      console.log(this, 11)
+      initComponentTmp.initHistory(--component_page)
+    })
+  },
+  nextPage: function(page) {
+    $('.components_list .next').on('click', function() {
+      initComponentTmp.initHistory(++component_page);
+    })
+  },
+  initHistory: function(page) {
+    if (page && page <= 0) {
+      return alert('前面没有了噢')
+    }
+    if (page && page > Math.floor($('#components_list_count').text() / 30)) {
+      return alert('后面没有更多了噢')
+    }
+    utils.fetch('/components/get?page=' + page, 'get', '', function(res) {
+      console.log(res)
+      $('#components_list_count').text(res.count)
+      var str = '';
+      $.each(res.lists, function(k, v) {
+        str += '<li data-id="' + v._id + '"> <span >' + v.name + '</span> <span class="label label-info">' + v.category + '</span> </li>'
+      })
+      $('#components_list_content').html(str);
+    }, function(msg) {
+      alert(msg)
+    })
+  },
+  bindOnce: function() {
+    $('#components_list_content').on('click', 'li', function() {
+      var _id = $(this).attr('data-id')
+      utils.fetch('/components/get?id=' + _id, 'get', '', function(res) {
+        $('.view_content').html(res.content)
+      })
+    })
+  },
+  autoCompute: function() {
+    var h = $(window).height() - $('.header').height() - 60 + 'px';
+    $('.tmp_content,.components_list').css({
+      height: h,
+      overflowY: 'scroll'
+    })
+  }
+}
+initComponentTmp.init();

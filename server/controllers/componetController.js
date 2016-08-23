@@ -17,6 +17,7 @@ exports.add = function * (){
 		}
 	}
 
+	body.create_time = new Date();
 	var component = new ComponentModel(body);
 	var newObj = yield component.save();
 	return this.body = {
@@ -27,13 +28,30 @@ exports.add = function * (){
 
 exports.get = function * (){
 	var ctx = this;
-	var body = ctx.request.body;
-	const result = yield ComponentModel.find({});
+	var body = ctx.request.query;
+	var limit = 30;
+	var start = (body.page || 0) * limit;
+
+	if(body.id){
+		var componentContent	= yield ComponentModel.findOne({"_id":body.id});
+		return this.body = {
+			code : 1,
+			data : {
+				content : componentContent.content,
+				id : componentContent._id,
+				title : componentContent.title,
+				category : componentContent.category
+			}
+		}
+	}
+
+	var result = yield ComponentModel.find({}).skip(start).limit(limit).sort('-create_time');
+	var count = yield ComponentModel.count();
 	return this.body = {
 		code : 1,
 		data : {
-			list : result ? result : [],
-			count : result ? result.length : 0
+			lists : result ? result : [],
+			count : count ? count : 0
 		},
 		msg : 'ok'
 	}

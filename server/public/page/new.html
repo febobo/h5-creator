@@ -9,6 +9,10 @@
 				<img src="./static/images/text.png" alt="text">
 				<p>模板历史</p>
 			</div>
+			<div id="components" data="components" >
+				<img src="./static/images/text.png" alt="text">
+				<p>组件库</p>
+			</div>
 			<div >
 				<img src="./static/images/text.png" alt="text">
 				<p>图库</p>
@@ -72,6 +76,26 @@
 				  </div>
 				</div>
 			</div>
+			<div data="components" id="components_tmp" style="display:none">
+				<div class="panel panel-default">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading" style="height:60px;line-height:42px;">
+						<h3>组件列表</h3><span>总条数:<span id="components_list_count"></span></span></div>
+				  <div class="panel-body components_list">
+				    <ul id="components_list_content">
+				    	<li>
+								<span>名称：我的模板</span>
+								<span>时间:2017-03-13</span>
+							</li>
+				    </ul>
+						<div class="btn-group page_btn" role="group" aria-label="...">
+						  <button type="button" class="btn btn-default prev" >prev</button>
+						  <button type="button" class="btn btn-default next">next</button>
+						</div>
+				  </div>
+				</div>
+			</div>
+
 		</div>
 	</section>
 	<section class="view-tmp">
