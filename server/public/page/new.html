@@ -1,21 +1,22 @@
 <section class="main">
 	<section class="menu">
-		<div>
-			<div>
+		<div class="slide_tab">
+			<div id="system" data="system">
 				<img src="./static/images/text.png" alt="text">
 				<p>系统模板</p>
 			</div>
-			<div>
-				<img src="./static/images/text.png" alt="text">
-				<p>我的模板</p>
-			</div>
-			<div>
+			<div id="history" data="history" >
 				<img src="./static/images/text.png" alt="text">
 				<p>模板历史</p>
 			</div>
+			<div >
+				<img src="./static/images/text.png" alt="text">
+				<p>图库</p>
+			</div>
 		</div>
-		<div class="tep_main">
-			<div>
+		<div class="tep_main" >
+			<div data="system" >
+
 				<ul class="typeSelect">
 					<li class="active" data="title">
 						<img src="./static/images/text.png" alt="text">
@@ -50,6 +51,20 @@
 							<img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1476836906,2540815395&fm=116&gp=0.jpg" alt="" style="width:100%;padding:5px">
 						</div> -->
 					</div>
+				</div>
+			</div>
+			<div data="history" id="history_tmp" style="display:none">
+				<div class="panel panel-default">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading" style="height:60px;line-height:42px;">模板历史</div>
+				  <div class="panel-body history_list">
+				    <ul id="history_list_content">
+				    	<li>
+								<span>名称：我的模板</span>
+								<span>时间:2017-03-13</span>
+							</li>
+				    </ul>
+				  </div>
 				</div>
 			</div>
 		</div>
