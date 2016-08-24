@@ -136,12 +136,19 @@ function addOnlyKey(ele, key) {
 }
 
 // 将选中的元素样式添加至可视区
+var NODE = ['IMG'];
+
 function textView(ele) {
   var styles = utils.getCss(ele[0]),
     text = ele.text();
-  $('#eleText').attr('value', text);
-  $('#eleSize').attr('value', styles.fontSize);
-  $('#eleColor').attr('value', utils.rgbToHex(styles.color));
+  $('#eleText').val(text);
+  $('#eleSize').val(styles.fontSize);
+  $('#eleWidth').val(utils.toPercent($('.view_content').width(), $(ele).width()));
+  $('#eleHeight').val(styles.height);
+  $('#eleBorder').val(styles.border);
+  $('#eleMargin').val(styles.margin);
+  $('#elePadding').val(styles.padding);
+  $('#eleColor').val(utils.rgbToHex(styles.color));
   addOnlyKey(['#eleText', '#eleSize', '#eleColor', '#eleFontWeight', '#eleAlign'], ele.attr('key'))
 
   $.each($('#eleSize > *'), function(k, v) {
@@ -166,49 +173,34 @@ function textView(ele) {
   })
 }
 
-// 将选中的元素样式添加至可视区
-function imageView(ele) {
-  var styles = utils.getCss($(ele)[0]);
-  addOnlyKey(['#eleUrl', '#eleAlign'], $(ele).attr('key'))
-
-  var percent = utils.toPercent($(ele).width(), $(ele).children('img').width())
-
-  $('#imageWidth').val(percent)
-  $('#imageHeight').val($(ele).children('img').height())
-  $.each($('#imageAlign > *'), function(k, v) {
-    if (styles.textAlign === 'start') {
-      return $('#imageAlign button').eq(0).addClass('btn-success').siblings().removeClass('btn-success')
-    }
-    if ($(v).attr('align') === styles.textAlign) {
-      $(v).addClass('btn-success').siblings().removeClass('btn-success')
-    }
-  })
-}
-
 // 检查元素类型
 function checkType(type, ele) {
-  if (type === 'title') {
-    textView($(ele));
-    viewSwitch($('.typeSelect li').eq(0), type)
-  }
-  if (type === 'image') {
-    imageView(ele);
-    viewSwitch($('.typeSelect li').eq(1), type)
+  textView($(ele));
+}
+
+$('.tmp_content').on('click', ' > * > *', function(evt) {
+	checkNode(evt)
+	var _clone = lastTarget = $(this).clone();
+	$('.view_content').append(_clone);
+  // lastTarget = _clone;
+  checkType($(this).attr('type'), this);
+	evt.stopPropagation;
+})
+
+function checkNode(evt) {
+  if (NODE.indexOf(evt.target.nodeName) >= 0) {
+    $('#eleText').parents('.form-group ').hide();
+    $('#eleUrl').parents('.form-group ').show();
+  } else {
+    $('#eleUrl').parents('.form-group ').hide();
+    $('#eleText').parents('.form-group ').show();
   }
 }
 
-$('.tmp_content').on('click', ' > * > *', function() {
-  $('.view_content').append($(this).clone());
-  // lastTarget = $(this).clone();
-  checkType($(this).attr('type'), this)
-})
-
 $('.view_content').on('click', '*', function(evt) {
-	console.log(evt.target,evt.target.nodeName,evt)
-	var styles = utils.getCss($(evt.target)[0]);
-	console.log(styles)
-	evt.stopPropagation();
+  checkNode(evt)
   lastTarget = $(this);
+  evt.stopPropagation();
   checkType($(this).attr('type'), this)
 })
 
@@ -230,10 +222,27 @@ var editTitle = {
     this.changeColor();
     this.changeAlign();
     this.changeText();
+    this.changeRange();
+    this.changeLayout();
+    this.changeUrl();
+  },
+  changeUrl: function() {
+    $('#eleUrl').on('change', function(evt) {
+      var file = this.files[0];
+      if (!/image\/\w+/.test(file.type)) {
+        alert("文件必须为图片！");
+        return false;
+      }
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function(e) {
+        $(lastTarget).attr('src', e.srcElement.result)
+      }
+    })
   },
   changeText: function() {
     $('#eleText').on('input propertychange', function(event) {
-      $(lastTarget).text($(this).val());
+      $(lastTarget[0]).text($(this).val());
     })
   },
   changeSize: function() {
@@ -241,6 +250,38 @@ var editTitle = {
       var attr = $('#eleSize :selected').val();
       $(lastTarget).css({
         fontSize: attr
+      })
+    })
+  },
+  changeLayout: function() {
+    $('#eleMargin').on('input propertychange', function(event) {
+      $(lastTarget).css({
+        margin: $(this).val()
+      });
+    })
+    $('#elePadding').on('input propertychange', function(event) {
+      $(lastTarget).css({
+        padding: $(this).val()
+      });
+    })
+    $('#eleBorder').on('input propertychange', function(event) {
+      $(lastTarget).css({
+        border: $(this).val()
+      });
+    })
+  },
+  changeRange: function() {
+    $('#eleWidth').on('input propertychange', function(event) {
+      $(lastTarget).css({
+        width: $(this).val(),
+      })
+      var h = $(lastTarget).height() + 'px'
+      $('#eleHeight').val(h)
+    })
+
+    $('#eleHeight').on('input propertychange', function(event) {
+      $(lastTarget).css({
+        height: $(this).val(),
       })
     })
   },
@@ -339,7 +380,7 @@ var viewSwitch = function(light, data) {
     })
   }
   activeSwitch('.tmp_content >div')
-  activeSwitch('.edit_content >div')
+    // activeSwitch('.edit_content >div')
 }
 
 // view 切换
@@ -349,10 +390,10 @@ $('.typeSelect li').on('click', function() {
 })
 
 $('#eleSize').html(createSizeOption(12, 42))
-editImage.init();
+  // editImage.init();
 editTitle.init();
 
-var sortable =  Sortable.create($('.view_content')[0]);
+var sortable = Sortable.create($('.view_content')[0]);
 
 $('#save').on('click', function() {
   utils.storage.set('content', $('.view_content').html());
@@ -409,7 +450,6 @@ var initHistoryTmp = {
   },
   prevPage: function(page) {
     $('.history_list .prev').on('click', function() {
-      console.log(this, 11)
       initHistoryTmp.initHistory(--history_page)
     })
   },
@@ -503,9 +543,13 @@ var initComponentTmp = {
     })
   },
   autoCompute: function() {
-    var h = $(window).height() - $('.header').height() - 60 + 'px';
+    var h = $(window).height() - $('.header').height() - 100 + 'px';
     $('.tmp_content,.components_list').css({
       height: h,
+      overflowY: 'scroll'
+    })
+    $('.edit_content').css({
+      height: $(window).height() - $('.header').height() + 'px',
       overflowY: 'scroll'
     })
   }
