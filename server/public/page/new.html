@@ -9,6 +9,14 @@
 				<img src="./static/images/text.png" alt="text">
 				<p>模板历史</p>
 			</div>
+			<div id="components" data="components" >
+				<img src="./static/images/text.png" alt="text">
+				<p>组件库</p>
+			</div>
+			<div id="components" data="components" >
+				<img src="./static/images/text.png" alt="text">
+				<p>主题</p>
+			</div>
 			<div >
 				<img src="./static/images/text.png" alt="text">
 				<p>图库</p>
@@ -56,7 +64,8 @@
 			<div data="history" id="history_tmp" style="display:none">
 				<div class="panel panel-default">
 				  <!-- Default panel contents -->
-				  <div class="panel-heading" style="height:60px;line-height:42px;">模板历史</div>
+				  <div class="panel-heading" style="height:60px;line-height:42px;">
+						<h3>模板历史</h3><span>总条数:<span id="history_list_count"></span></span></div>
 				  <div class="panel-body history_list">
 				    <ul id="history_list_content">
 				    	<li>
@@ -64,9 +73,33 @@
 								<span>时间:2017-03-13</span>
 							</li>
 				    </ul>
+						<div class="btn-group page_btn" role="group" aria-label="...">
+						  <button type="button" class="btn btn-default prev" >prev</button>
+						  <button type="button" class="btn btn-default next">next</button>
+						</div>
 				  </div>
 				</div>
 			</div>
+			<div data="components" id="components_tmp" style="display:none">
+				<div class="panel panel-default">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading" style="height:60px;line-height:42px;">
+						<h3>组件列表</h3><span>总条数:<span id="components_list_count"></span></span></div>
+				  <div class="panel-body components_list">
+				    <ul id="components_list_content">
+				    	<li>
+								<span>名称：我的模板</span>
+								<span>时间:2017-03-13</span>
+							</li>
+				    </ul>
+						<div class="btn-group page_btn" role="group" aria-label="...">
+						  <button type="button" class="btn btn-default prev" >prev</button>
+						  <button type="button" class="btn btn-default next">next</button>
+						</div>
+				  </div>
+				</div>
+			</div>
+
 		</div>
 	</section>
 	<section class="view-tmp">
@@ -89,115 +122,5 @@
 			</div>
 		</div>
 	</section>
-	<section class="edit_content">
-		<!-- <div>请点击左侧列表</div> -->
-		<div class="edit_text" data="title">
-			<div>
-				<ol class="breadcrumb">
-					<li><a>系统模板</a></li>
-					<li class="active">标题</li>
-				</ol>
-			</div>
-			<form class="form-horizontal">
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Text</label>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" id="eleText" aria-describedby="inputSuccess3Status">
-					</div>
-				</div>
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Size</label>
-					<div class="col-sm-9">
-						<select class="form-control" id="eleSize">
-
-						</select>
-					</div>
-				</div>
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Weight</label>
-					<div class="col-sm-9">
-						<!-- <input type="text" class="form-control" id="inputSuccess3" aria-describedby="inputSuccess3Status"> -->
-						<select class="form-control" id="eleFontWeight">
-							<option value="200">200</option>
-							<option value="300">300 </option>
-							<option value="400">400 Normal</option>
-							<option value="500">500 </option>
-							<option value="600">600 Blod</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Color</label>
-					<div class="col-sm-9">
-						<input type="color" class="form-control" id="eleColor" aria-describedby="inputSuccess3Status">
-					</div>
-				</div>
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Align</label>
-					<div class="col-sm-9">
-						<div class="btn-group" role="group" id="eleAlign">
-							<button type="button" class="btn btn-default" align="left">Left</button>
-							<button type="button" class="btn btn-default" align="center">Center</button>
-							<button type="button" class="btn btn-default" align="right">Right</button>
-						</div>
-					</div>
-				</div>
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Operation</label>
-					<div class="col-sm-9">
-						<div class="btn-group" role="group" id="eleAlign">
-							<button type="button" class="btn btn-danger deleteComponent" class="">Delete</button>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-		<div class="edit_image" data="image" style="display:none">
-			<div>
-				<ol class="breadcrumb">
-					<li><a>系统模板</a></li>
-					<li class="active">图片</li>
-				</ol>
-			</div>
-			<form class="form-horizontal">
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Url</label>
-					<div class="col-sm-9">
-						<input type="file" class="form-control" id="eleUrl" aria-describedby="inputSuccess3Status">
-					</div>
-				</div>
-
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Width</label>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" id="imageWidth" aria-describedby="inputSuccess3Status" placeholder="100%" onpropertychange="onImageWidth(event)">
-					</div>
-				</div>
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Height</label>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" id="imageHeight" placeholder="auto" onpropertychange="onImageHeight(event)">
-					</div>
-				</div>
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Align</label>
-					<div class="col-sm-9">
-						<div class="btn-group" role="group" id="imageAlign">
-							<button type="button" class="btn btn-default" align="left">Left</button>
-							<button type="button" class="btn btn-default" align="center">Center</button>
-							<button type="button" class="btn btn-default" align="right">Right</button>
-						</div>
-					</div>
-				</div>
-				<div class="form-group  has-feedback">
-					<label class="control-label col-sm-3" for="inputSuccess3">Operation</label>
-					<div class="col-sm-9">
-						<div class="btn-group" role="group" id="eleAlign">
-							<button type="button" class="btn btn-danger  deleteComponent" class="">Delete</button>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-	</section>
+	<% include ./editContent.html %>
 </section>

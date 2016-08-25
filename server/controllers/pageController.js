@@ -1,4 +1,5 @@
 var pageModel = require('../model/page');
+var moment = require('moment')
 
 exports.preview = function * (){
 	var ctx = this;
@@ -42,6 +43,8 @@ exports.preview = function * (){
 exports.getPagelist = function * (){
 	var ctx = this;
 	var body = ctx.request.query;
+	var limit = 20;
+	var start = (body.page || 0) * limit;
 	var pageContent;
 	if(body.id){
 		pageContent	= yield pageModel.findOne({"_id":body.id});
@@ -56,12 +59,21 @@ exports.getPagelist = function * (){
 		}
 	}
 
-	const result = yield pageModel.find({});
+	var result = yield pageModel.find({}).skip(start).limit(limit).sort('-create_time');
+	var count = yield pageModel.count();
+	for(var i=0,l=result.length ; i<l ; i++){
+		if(result[i].create_time){
+			result[i].create_time = moment(result[i].create_time).format("YYYY-MM-DD HH:mm:ss");
+		}else{
+			result[i].create_time = '时间丢了'
+		}
+	}
+
 	return this.body = {
 		code : 1,
 		data : {
 			lists : result || [],
-			count : result.length || 0
+			count : count || 0
 		}
 	}
 }
