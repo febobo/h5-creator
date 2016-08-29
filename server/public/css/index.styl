@@ -50,6 +50,9 @@ $f4=#f4f4f4
 		padding:15px
 		>div
 				transition: display 0.5s
+.image_temp
+		img
+				max-width: 100%
 .watch_demo
 		position: absolute
 		left: 0
@@ -60,6 +63,23 @@ $f4=#f4f4f4
 		width:100%
 		top: 1px
 		z-index: 2
+		display: flex
+		align-items: center
+		justify-content: space-between
+		padding:0 10px
+
+.tips{
+		border-color: #d9534f
+    outline: 0
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(217, 83, 79)
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(217, 83, 79)
+}
+
+@media (max-width: 1300px)
+	.view-tmp
+			padding-top: 80px
+			.phone
+					zoom:0.9
 .view-tmp
 		flex:1
 		display: flex
@@ -89,12 +109,12 @@ $f4=#f4f4f4
 		width: 295px
 		.breadcrumb
 				margin-bottom: 0
-#history_tmp,#components_tmp
+#history_tmp,#components_tmp,#images_tmp
 		.panel-heading
 				display: flex
 				align-items: center
 				justify-content: space-between
-.history_list,.components_list
+.history_list,.components_list,.images_list
 		ul
 				li
 						display: flex

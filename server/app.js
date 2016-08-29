@@ -25,6 +25,7 @@ render(app, {
 });
 
 app.use(bodyParser());
+
 app.use(staticServer(__dirname + '/public'))
 app.use(cors({
   origin: '*',

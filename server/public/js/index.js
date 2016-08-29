@@ -88,6 +88,12 @@ utils.fetch('/components/get', 'get', '', function(res) {
       case 'image':
         $('.image_temp').append(v.content)
         break;
+			case 'chapter':
+        $('.chapter_temp').append(v.content)
+        break;
+      case 'mashup':
+        $('.mashup_temp').append(v.content)
+        break;
       default:
     }
   })
@@ -213,6 +219,21 @@ function createSizeOption(min, max) {
   }
   return str;
 }
+Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
 
 // 标题编辑
 var editTitle = {
@@ -233,10 +254,46 @@ var editTitle = {
         alert("文件必须为图片！");
         return false;
       }
+			// $.ajax({
+			// 	url : 'http://lt-upload.imgs.wn518.com/upload_webp_images_j.wn',
+			// 	method : 'post',
+			// 	headers : {
+			// 		sign : 'jyh-cms = RaXcv#Dv!jcQK5Tc$FZp00aoX%liVybg',
+			// 		app :  'jyh-cms',
+			// 		meta : 'md5=37ee6d5e1b004bb27766f8ba95f686f7&filename='+file.name
+			// 	},
+			// 	success : function(res){
+			// 		console.log(res)
+			// 	}
+			// })
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function(e) {
+				console.log(file)
         $(lastTarget).attr('src', e.srcElement.result)
+				// utils.fetch('/components/loadfile' , 'post' , {
+				// 	// img : e.target.result
+				// 	data : file
+				// }, function(res){
+				// 	console.log(res)
+				// })
+				var formData = new FormData();
+				formData.append('file',file)
+			  $.ajax({
+			    url: 'http://127.0.0.1:3001/components/loadfile',
+			    type: 'POST',
+			    data: formData,
+			    async: false,
+			    cache: false,
+			    contentType: false,
+			    processData: false,
+			    success: function(data){
+			      console.log('imgUploader upload success, data:', data);
+			    },
+			    error: function(){
+			      $("#spanMessage").html("与服务器通信发生错误");
+			    }
+			  });
       }
     })
   },
@@ -409,10 +466,15 @@ $('.view_content').html(utils.storage.get('content'));
 
 $('#phoneView').on('click', function() {
   if (!$('.view_content').html()) return alert('好像没有什么可查看的噢');
+	if(!$('#pageTitle').val()){
+		$('#pageTitle').addClass('tips');
+		return  alert('先取个好听的名字才能保存噢');
+	}
+	$('#pageTitle').removeClass('tips');
   utils.fetch('/page/preview', 'post', {
     "create_time": new Date(),
     "content": $('.view_content').html(),
-    "name": '',
+    "name": $('#pageTitle').val(),
     "id": utils.getQueryString('id')
   }, function(res) {
     window.history.pushState(null, null, '?id=' + res.id);
@@ -466,11 +528,10 @@ var initHistoryTmp = {
       return alert('后面没有更多了噢')
     }
     utils.fetch('/page/preview?page=' + page, 'get', '', function(res) {
-      console.log(res)
       $('#history_list_count').text(res.count)
       var str = '';
       $.each(res.lists, function(k, v) {
-        str += '<li data-id="' + v._id + '"> <span >' + v.name + '</span> <span>' + v.create_time + '</span> </li>'
+        str += '<li data-id="' + v._id + '"> <span >' + v.name + '</span> <span>' + new Date(v.create_time || '1970-01-01').Format("yyyy-MM-dd hh:mm:ss") + '</span> </li>'
       })
       $('#history_list_content').html(str);
     }, function(msg) {
@@ -481,6 +542,8 @@ var initHistoryTmp = {
     $('#history_list_content').on('click', 'li', function() {
       var _id = $(this).attr('data-id')
       utils.fetch('/page/preview?id=' + _id, 'get', '', function(res) {
+				window.history.pushState(null, null, '?id=' + res.id);
+				$('#pageTitle').val(res.name);
         $('.view_content').html(res.content)
       })
     })
@@ -503,7 +566,24 @@ var initComponentTmp = {
     this.bindOnce();
     this.prevPage();
     this.nextPage();
+		this.removeCmp()
   },
+	removeCmp : function(){
+		$('.tep_main').on('click' , 'span.remove' , function(e){
+			console.log(e)
+			e.stopPropagation();
+			var _id = $(this).attr('data-id');
+			utils.fetch('/components/delete', 'post', {
+				id : _id
+			}, function(res) {
+				initComponentTmp.initHistory();
+      },function(res){
+				alert(res.msg)
+			})
+
+			return false
+		})
+	},
   prevPage: function(page) {
     $('.components_list .prev').on('click', function() {
       console.log(this, 11)
@@ -523,11 +603,10 @@ var initComponentTmp = {
       return alert('后面没有更多了噢')
     }
     utils.fetch('/components/get?page=' + page, 'get', '', function(res) {
-      console.log(res)
       $('#components_list_count').text(res.count)
       var str = '';
       $.each(res.lists, function(k, v) {
-        str += '<li data-id="' + v._id + '"> <span >' + v.name + '</span> <span class="label label-info">' + v.category + '</span> </li>'
+        str += '<li data-id="' + v._id + '"> <span >' + v.name + '</span> <div><span class="label label-info">' + v.category + '</span> <span class="label label-danger remove" data-id="' + v._id + '">删除</span></div></li>'
       })
       $('#components_list_content').html(str);
     }, function(msg) {
@@ -535,7 +614,7 @@ var initComponentTmp = {
     })
   },
   bindOnce: function() {
-    $('#components_list_content').on('click', 'li', function() {
+    $('#components_list_content').on('click', 'li', function(e) {
       var _id = $(this).attr('data-id')
       utils.fetch('/components/get?id=' + _id, 'get', '', function(res) {
         $('.view_content').html(res.content)
@@ -543,7 +622,7 @@ var initComponentTmp = {
     })
   },
   autoCompute: function() {
-    var h = $(window).height() - $('.header').height() - 100 + 'px';
+    var h = $(window).height() - $('.header').height() - 60 + 'px';
     $('.tmp_content,.components_list').css({
       height: h,
       overflowY: 'scroll'
