@@ -62,6 +62,9 @@
 .tmp_content >div {
   transition: display 0.5s;
 }
+.image_temp img {
+  max-width: 100%;
+}
 .watch_demo {
   position: absolute;
   left: 0;
@@ -72,6 +75,24 @@
   width: 100%;
   top: 1px;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+.tips {
+  border-color: #d9534f;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px #d9534f;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px #d9534f;
+}
+@media (max-width: 1300px) {
+  .view-tmp {
+    padding-top: 80px;
+  }
+  .view-tmp .phone {
+    zoom: 0.9;
+  }
 }
 .view-tmp {
   flex: 1;
@@ -111,13 +132,15 @@
   margin-bottom: 0;
 }
 #history_tmp .panel-heading,
-#components_tmp .panel-heading {
+#components_tmp .panel-heading,
+#images_tmp .panel-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .history_list ul li,
-.components_list ul li {
+.components_list ul li,
+.images_list ul li {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -126,11 +149,13 @@
   border-bottom: 1px dashed #ccc;
 }
 .history_list ul li:hover,
-.components_list ul li:hover {
+.components_list ul li:hover,
+.images_list ul li:hover {
   background: #f4f4f4;
 }
 .history_list .page_btn,
-.components_list .page_btn {
+.components_list .page_btn,
+.images_list .page_btn {
   text-align: center;
   padding: 10px;
   display: flex;

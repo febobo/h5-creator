@@ -17,7 +17,7 @@
 				<img src="./static/images/text.png" alt="text">
 				<p>主题</p>
 			</div>
-			<div >
+			<div id="images" data="images">
 				<img src="./static/images/text.png" alt="text">
 				<p>图库</p>
 			</div>
@@ -34,11 +34,11 @@
 						<img src="./static/images/image.png" alt="text">
 						<p>图片</p>
 					</li>
-					<li>
+					<li data="chapter">
 						<img src="./static/images/card.png" alt="text">
 						<p>段落</p>
 					</li>
-					<li>
+					<li data="mashup">
 						<img src="./static/images/titlecart.png" alt="text">
 						<p>图文</p>
 					</li>
@@ -52,6 +52,16 @@
 						<h5 style="margin:5px" type="title" key="h5">我是标题</h5> -->
 					</div>
 					<div class="image_temp" data="image" style="display:none">
+						<!-- <div style="width:100%;padding:5px" type="image" key="img1">
+							<img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2588862075,4117237517&fm=116&gp=0.jpg" alt="" style="width:100%;">
+						</div>
+						<div style="width:100%;padding:5px" type="image" key="img2">
+							<img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1476836906,2540815395&fm=116&gp=0.jpg" alt="" style="width:100%;padding:5px">
+						</div> -->
+					</div>
+					<div class="chapter_temp" data="chapter" style="display:none">
+					</div>
+					<div class="mashup_temp" data="mashup" style="display:none">
 						<!-- <div style="width:100%;padding:5px" type="image" key="img1">
 							<img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2588862075,4117237517&fm=116&gp=0.jpg" alt="" style="width:100%;">
 						</div>
@@ -86,9 +96,41 @@
 				  <div class="panel-heading" style="height:60px;line-height:42px;">
 						<h3>组件列表</h3><span>总条数:<span id="components_list_count"></span></span></div>
 				  <div class="panel-body components_list">
+				    <!-- <ul>
+				    	<li>
+								<span>名称</span>
+								<div>
+									<span>类型</span>
+									<span>操作</span>
+								</div>
+							</li>
+				    </ul> -->
 				    <ul id="components_list_content">
 				    	<li>
 								<span>名称：我的模板</span>
+								<span>时间:2017-03-13</span>
+							</li>
+				    </ul>
+						<div class="btn-group page_btn" role="group" aria-label="...">
+						  <button type="button" class="btn btn-default prev" >prev</button>
+						  <button type="button" class="btn btn-default next">next</button>
+						</div>
+				  </div>
+				</div>
+			</div>
+			<div data="images" id="images_tmp" style="display:none">
+				<div class="panel panel-default">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading" style="height:60px;line-height:42px;">
+						<h3>图库</h3><span>总条数:<span id="images_list_count"></span></span></div>
+				  <div class="panel-body images_list">
+						<div>
+						  <button type="button" class="btn btn-info btn-block">上传图片</button>
+						  <button type="button" class="btn btn-danger btn-block">清空图库</button>
+						</div>
+				    <ul id="images_list_content">
+				    	<li>
+								<span>名称：我的图库</span>
 								<span>时间:2017-03-13</span>
 							</li>
 				    </ul>
@@ -104,12 +146,13 @@
 	</section>
 	<section class="view-tmp">
 		<div class="watch_demo">
-			<span></span>
-			<span></span>
+			<div class="">
+		    <input type="text" class="form-control" id="pageTitle" placeholder="给我取个名字吧">
+		  </div>
 			<div class="btn-group" role="group" aria-label="...">
-				<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-tag" style="margin-right:3px;"></span>保 存</button>
-				<button type="button" class="btn btn-default">
-					<span class="glyphicon  glyphicon-sunglasses" style="margin-right:3px;"></span> 撤 消</button>
+				<button type="button" class="btn btn-default " id="save"><span class="glyphicon glyphicon-tag" style="margin-right:3px;"></span>保存为草稿</button>
+				<!-- <button type="button" class="btn btn-default">
+					<span class="glyphicon  glyphicon-sunglasses" style="margin-right:3px;"></span> 撤 消</button> -->
 				<button type="button" class="btn btn-default" id="phoneView"  data-target="#previewModal">
 					<span class="glyphicon  glyphicon-phone" style="margin-right:3px;"></span>
 					在手机上查看

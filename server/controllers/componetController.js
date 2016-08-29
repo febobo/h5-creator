@@ -1,4 +1,10 @@
-var ComponentModel = require('../model/components');
+const ComponentModel = require('../model/components');
+const request = require('request');
+const crypto = require('crypto');
+const fs = require('fs');
+const parse = require('co-busboy');
+const os = require('os');
+const path = require('path');
 
 exports.add = function * (){
 	var ctx = this;
@@ -26,6 +32,18 @@ exports.add = function * (){
 	}
 }
 
+exports.loadfile = function * (){
+	if (!this.request.is('multipart/*')) return yield next
+	var parts = parse(this);
+	var part;
+	while (part = yield parts) {
+    var stream = fs.createWriteStream(path.join('./public/static/upload/images/', Date.parse(new Date()).toString(),Math.random().toString()));
+    part.pipe(stream)
+    console.log('uploading %s -> %s', part.filename, stream.path);
+  }
+
+}
+
 exports.get = function * (){
 	var ctx = this;
 	var body = ctx.request.query;
@@ -34,6 +52,14 @@ exports.get = function * (){
 
 	if(body.id){
 		var componentContent	= yield ComponentModel.findOne({"_id":body.id});
+
+		if(!componentContent){
+			return this.body = {
+				code : 1,
+				msg : '找不到该条记录'
+			}
+		}
+
 		return this.body = {
 			code : 1,
 			data : {
@@ -55,4 +81,29 @@ exports.get = function * (){
 		},
 		msg : 'ok'
 	}
+}
+
+exports.delete = function*() {
+  var ctx = this;
+  var body = ctx.request.body;
+  if (!body.id) {
+    return this.body = {
+      code: 0,
+      msg: 'id不能为空'
+    }
+  }
+
+  const result = yield ComponentModel.remove({
+    _id: body.id
+  });
+  if (result.result.n) {
+    return this.body = {
+      code: 1,
+      msg: '删除成功'
+    }
+  }
+  return this.body = {
+    code: 1,
+    msg: '没有找到匹配的数据'
+  }
 }
