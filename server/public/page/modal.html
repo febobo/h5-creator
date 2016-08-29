@@ -22,9 +22,9 @@
 							<select class="form-control" id="cpCate">
 								<option value="title">标题</option>
 								<option value="image">图片 </option>
-								<option value="400">段落</option>
-								<option value="500">图文</option>
-								<option value="600">其它</option>
+								<option value="chapter">段落</option>
+								<option value="mashup">图文</option>
+								<option value="other">其它</option>
 							</select>
 				    </div>
 				  </div>
@@ -56,7 +56,8 @@
 					"content" : $('#cpContent').val(),
 					"name" : $('#cpName').val()
 		},function(res){
-				$('#myModal').modal('hide')
+				$('#myModal').modal('hide');
+				location.reload();
 				alert('添加成功')
 		},function(msg){
 			  alert(msg)
