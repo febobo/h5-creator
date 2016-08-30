@@ -606,7 +606,7 @@ var initComponentTmp = {
       $('#components_list_count').text(res.count)
       var str = '';
       $.each(res.lists, function(k, v) {
-        str += '<li data-id="' + v._id + '"> <span >' + v.name + '</span> <div><span class="label label-info">' + v.category + '</span> <span class="label label-danger remove" data-id="' + v._id + '">删除</span></div></li>'
+        str += '<li data-id="' + v._id + '"> <span >' + v.name + '</span> <div><span class="label label-info">' + v.category + '</span> <span auth="delcomp" class="label label-danger remove" data-id="' + v._id + '">删除</span></div></li>'
       })
       $('#components_list_content').html(str);
     }, function(msg) {

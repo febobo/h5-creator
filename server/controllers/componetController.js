@@ -47,7 +47,7 @@ exports.loadfile = function * (){
 exports.get = function * (){
 	var ctx = this;
 	var body = ctx.request.query;
-	var limit = 30;
+	var limit = 100;
 	var start = (body.page || 0) * limit;
 
 	if(body.id){
