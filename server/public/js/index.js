@@ -122,6 +122,7 @@ function textView(ele) {
   $('#eleMargin').val(styles.margin);
   $('#elePadding').val(styles.padding);
   $('#eleColor').val(utils.rgbToHex(styles.color));
+
   $.each($('#eleSize > *'), function(k, v) {
     if ($(v).attr('value') == styles.fontSize) {
       $(v).attr('selected', true).siblings().removeAttr('selected')
@@ -221,12 +222,11 @@ var editTitle = {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function(e) {
-        console.log(file)
         $(lastTarget).attr('src', e.srcElement.result)
         var formData = new FormData();
         formData.append('file', file)
         $.ajax({
-          url: 'http://127.0.0.1:3001/components/loadfile',
+          url: 'http://127.0.0.1:3001/file/loadfile',
           type: 'POST',
           data: formData,
           async: false,
@@ -234,7 +234,7 @@ var editTitle = {
           contentType: false,
           processData: false,
           success: function(data) {
-            console.log('imgUploader upload success, data:', data);
+            console.log(data);
           },
           error: function() {
             $("#spanMessage").html("与服务器通信发生错误");
