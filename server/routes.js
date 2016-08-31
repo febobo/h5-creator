@@ -9,9 +9,7 @@ module.exports = function(router) {
 
   router.get('/components/get', Components.get)
   router.post('/components/add', Components.add)
-  router.post('/components/loadfile', koaBetterBody({
-    multipart: true
-  }), Components.loadfile)
+  router.post('/components/loadfile', Components.loadfile)
   router.post('/page/preview', Page.preview)
   router.get('/page/preview', Page.getPagelist)
   router.post('/components/delete', Components.delete)

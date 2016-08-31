@@ -1,9 +1,9 @@
 module.exports = {
 	DB : {
 		PORT: 27017,
-		HOST: "localhost",
+		HOST: "192.168.1.13",
 		USER: "root",
 		PASSWORD: "root",
-		NAME: "creator" 
+		NAME: "creator"
 	}
 }
