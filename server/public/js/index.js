@@ -162,6 +162,7 @@ function checkNode(evt) {
   if (NODE.indexOf(evt.target.nodeName) >= 0) {
     $('#eleText').parents('.form-group ').hide();
     $('#eleUrl').parents('.form-group ').show();
+    $('#images_tmp').show().siblings().hide();
   } else {
     $('#eleUrl').parents('.form-group ').hide();
     $('#eleText').parents('.form-group ').show();
@@ -213,7 +214,8 @@ var editTitle = {
     this.changeUrl();
   },
   changeUrl: function() {
-    $('#eleUrl').on('change', function(evt) {
+    $('#upload-file').on('change', function(evt) {
+      console.log(this)
       var file = this.files[0];
       if (!/image\/\w+/.test(file.type)) {
         alert("文件必须为图片！");
@@ -222,7 +224,7 @@ var editTitle = {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function(e) {
-        $(lastTarget).attr('src', e.srcElement.result)
+
         var formData = new FormData();
         formData.append('file', file)
         $.ajax({
@@ -234,7 +236,15 @@ var editTitle = {
           contentType: false,
           processData: false,
           success: function(data) {
-            console.log(data);
+            $(lastTarget).attr('src', e.srcElement.result)
+            var str = '<li><div class="img_box" style="height:100px">' +
+              '<img src="' + data.data.url + '" alt="' + data.data.name + '">' +
+              '</div>' +
+              '<div>' +
+              '<span>' + data.data.name + '</span>' +
+              '</div>' +
+              '</li>'
+            $('#images_list_content').prepend(str);
           },
           error: function() {
             $("#spanMessage").html("与服务器通信发生错误");
@@ -342,7 +352,7 @@ $('.typeSelect li').on('click', function() {
 })
 
 $('#eleSize').html(createSizeOption(12, 42))
-  // editImage.init();
+
 editTitle.init();
 
 var sortable = Sortable.create($('.view_content')[0]);
@@ -529,3 +539,95 @@ var initComponentTmp = {
   }
 }
 initComponentTmp.init();
+
+var image_page = 0;
+var initImagesTmp = {
+  init: function() {
+    this.initHistory();
+    this.autoCompute();
+    // this.bindOnce();
+    this.prevPage();
+    this.nextPage();
+    this.removeCmp();
+    this.replaceUrl();
+  },
+  replaceUrl: function() {
+    $('#images_list_content').on('click', 'li', function() {
+      if (!lastTarget || lastTarget && lastTarget[0].nodeName !== 'IMG') {
+        return
+      }
+      $(lastTarget).attr('src', $(this).find('img').attr('src'))
+    })
+  },
+  removeCmp: function() {
+    $('.tep_main').on('click', 'span.remove', function(e) {
+      console.log(e)
+      e.stopPropagation();
+      var _id = $(this).attr('data-id');
+      utils.fetch('/images/delete', 'post', {
+        id: _id
+      }, function(res) {
+        initComponentTmp.initHistory();
+      }, function(res) {
+        alert(res.msg)
+      })
+      return false
+    })
+  },
+  prevPage: function(page) {
+    $('.images_list .prev').on('click', function() {
+      console.log(this, 11)
+      initImagesTmp.initHistory(--image_page)
+    })
+  },
+  nextPage: function(page) {
+    $('.images_list .next').on('click', function() {
+      initImagesTmp.initHistory(++image_page);
+    })
+  },
+  initHistory: function(page) {
+    if (page && page <= 0) {
+      return alert('前面没有了噢')
+    }
+    if (page && page > Math.floor($('#images_list_count').text() / 30)) {
+      return alert('后面没有更多了噢')
+    }
+    utils.fetch('/file/get?page=' + page, 'get', '', function(res) {
+      $('#images_list_count').text(res.count)
+      var str = '';
+      $.each(res.lists, function(k, v) {
+        str += '<li><div class="img_box" style="height:100px">' +
+          '<img src="' + v.url + '" alt="' + v.name + '">' +
+          '</div>' +
+          '<div>' +
+          '<span>' + v.name + '</span>' +
+          '</div>' +
+          '</li>'
+      })
+      $('#images_list_content').html(str);
+    }, function(msg) {
+      alert(msg)
+    })
+  },
+  bindOnce: function() {
+    $('#images_list_content').on('click', 'li', function(e) {
+      var _id = $(this).attr('data-id')
+      utils.fetch('/images/get?id=' + _id, 'get', '', function(res) {
+        $('.view_content').html(res.content)
+      })
+    })
+  },
+  autoCompute: function() {
+    var h = $(window).height() - $('.header').height() - 60 + 'px';
+    $('.tmp_content,.images_list').css({
+      height: h,
+      overflowY: 'scroll'
+    })
+    $('.edit_content').css({
+      height: $(window).height() - $('.header').height() + 'px',
+      overflowY: 'scroll'
+    })
+
+  }
+}
+initImagesTmp.init();

@@ -63,7 +63,7 @@ exports.loadfile = function*() {
 	    data: saveObjResult
 	  }
 	}
-	
+
   return this.body = {
     code: 0,
     data: result.res.message
@@ -76,29 +76,6 @@ exports.get = function*() {
   var body = ctx.request.query;
   var limit = 30;
   var start = (body.page || 0) * limit;
-
-  if (body.id) {
-    var componentContent = yield FileModel.findOne({
-      "_id": body.id
-    });
-
-    if (!componentContent) {
-      return this.body = {
-        code: 1,
-        msg: '找不到该条记录'
-      }
-    }
-
-    return this.body = {
-      code: 1,
-      data: {
-        content: componentContent.content,
-        id: componentContent._id,
-        title: componentContent.title,
-        category: componentContent.category
-      }
-    }
-  }
 
   var result = yield FileModel.find({}).skip(start).limit(limit).sort('-create_time');
   var count = yield FileModel.count();

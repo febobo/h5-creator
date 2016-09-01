@@ -12,6 +12,8 @@ module.exports = function(router) {
   router.get('/components/get', Components.get)
   router.post('/components/add', Components.add)
   router.post('/file/loadfile', File.loadfile)
+	router.get('/file/get', File.get)
+	router.post('/file/delete', File.delete)
   router.post('/page/preview', Page.preview)
   router.get('/page/preview', Page.getPagelist)
   router.post('/components/delete', Components.delete)
