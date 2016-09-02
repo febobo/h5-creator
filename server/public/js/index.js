@@ -78,32 +78,91 @@ var utils = {
   }
 }
 
-// 拉取元件
-utils.fetch('/components/get', 'get', '', function(res) {
-  $.each(res.lists, function(k, v) {
-    switch (v.category) {
-      case 'title':
-        $('.title_temp').append(v.content)
-        break;
-      case 'image':
-        $('.image_temp').append(v.content)
-        break;
-      case 'chapter':
-        $('.chapter_temp').append(v.content)
-        break;
-      case 'mashup':
-        $('.mashup_temp').append(v.content)
-        break;
-      default:
+// 组件对象，包括组建事件，增删改查等
+function _Component(){
+  // 一些基本的dom对象
+  var domUlTypeSelect   = $('#ul_typeSelect') ,
+      domUlTypeSelectC  = $('#ul_typeSelectContent');
+
+  var componentsData = {};
+  var componentTypes = [
+    {name:'标题' ,key:'title'   ,img:'text.png'},
+    {name:'图片' ,key:'image'   ,img:'image.png'},
+    {name:'段落' ,key:'chapter' ,img:'card.png'},
+    {name:'图文' ,key:'mashup'  ,img:'titlecart.png'}
+  ]
+  // 一些基本的方法
+  // 获取元件，仅获取一次，若没网，应该从localstore中读取
+  var getComponentData = function(){
+    utils.fetch('/components/get', 'get', '', function(res) {
+      var tempResult = {} ,_temp = null;
+      $.each(res.lists, function(k, v) {
+        _temp = v.category;
+        if(!tempResult[_temp]){
+          tempResult[_temp] = [];
+        }
+        tempResult[_temp].push(v);
+      });
+      componentsData = tempResult;
+      loadComponentTab();
+    })
+  },
+  // 加载左侧组件的列表
+  getComponentAList = function(key){
+    var html = [] ,data = componentsData[key];
+    if(!data)  return  '';
+    for(var i=0,len=data.length;i<len;i++){
+      html.push(data[i].content);
     }
-  })
-})
+    return html.join('');
+  },
+  // 加载系统模板上方的组件类型
+  loadComponentTab = function(){
+    var html = [] ,htmlContent = [];
+    // TODO
+    for(var i=0,len=componentTypes.length,item ,_key;i<len;i++){
+      item = componentTypes[i];
+      _key = item.key;
+      if(i == 0){
+        html.push('<li class="active" data="'+_key+'">');
+        htmlContent.push('<div class="'+_key+'_temp" data="'+_key+'">');
+      }else{
+        html.push('<li data="'+_key+'">');
+        htmlContent.push('<div class="'+_key+'_temp" data="'+_key+'" style="display:none">');
+      }
+      htmlContent.push(getComponentAList(_key) + '</div>');
+      html.push('<img src="./static/images/'+item.img+'" alt="'+_key+'"><p>'+item.name+'</p></li>');
+    }
+    domUlTypeSelect.html(html.join(''));
+    domUlTypeSelectC.html(htmlContent.join(''));
+    loadEvent();
+  },
+  loadEvent = function(){
+    var leftSource = document.querySelector('.title_temp') ,
+        rightSource = document.querySelector('#viewContent');
+    // dragula([domUlTypeSelectC.children('.title_temp'), domEditViewContent]);
+    dragula([leftSource, rightSource] ,{
+      copy: function (el, source) {
+        return source === leftSource
+      },
+      accepts: function (el, target) {
+        return target !== leftSource
+      }
+    });
+  }
+
+  // 执行加载
+  getComponentData();
+}
 
 // 如果首次url中存在id则拉取数据
 if (utils.getQueryString('id')) {
   utils.fetch('/page/preview?id=' + utils.getQueryString('id'), 'get', '', function(res) {
     $('.view_content').html(res.content)
+    _Component();
   })
+}else{
+  _Component();
 }
 
 // 记录最后一次操作的元素
@@ -354,8 +413,6 @@ $('.typeSelect li').on('click', function() {
 $('#eleSize').html(createSizeOption(12, 42))
 
 editTitle.init();
-
-var sortable = Sortable.create($('.view_content')[0]);
 
 $('#save').on('click', function() {
   utils.storage.set('content', $('.view_content').html());
