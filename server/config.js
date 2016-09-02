@@ -1,7 +1,7 @@
 module.exports = {
 	DB : {
 		PORT: 27017,
-		HOST: "localhost",
+		HOST: "192.168.1.13",
 		USER: "root",
 		PASSWORD: "root",
 		NAME: "creator" 
@@ -14,6 +14,5 @@ module.exports = {
 	 	TIMEOUT 	: 1000 ,			
 	 	SYSID		: '22',				//在 http://ym2.corp.wn518.com:8405/ 系统管理中，数据后台系统的ID
 	 	MCODE		: 'index',			//任意指定一个
-
 	}
 }

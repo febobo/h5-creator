@@ -176,3 +176,30 @@ user-select:none;
   display: flex;
   justify-content: center;
 }
+#images_list_content li {
+  width: 47%;
+  margin: 1%;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid #fafafa;
+}
+#images_list_content li .img_box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#images_list_content li img {
+  max-width: 100%;
+}
+.btn-file {
+  position: relative;
+}
+.btn-file input {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  opacity: 0;
+}
