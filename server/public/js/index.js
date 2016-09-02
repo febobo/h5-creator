@@ -155,7 +155,14 @@ function _Component(){
       accepts: function (el, target) {
         return target !== leftSource
       }
+    }).on('drag', function (el) {
+      el.className = el.className.replace('ex-moved', '');
+    }).on('drop', function (el) {
+      el.className += ' ex-moved';
     });
+
+
+
     domAllContent   = domUlTypeSelectC.children('[class$=_temp]');
     domAllTypeLi    = domUlTypeSelect.children('li');
     // Tab 切换
@@ -172,10 +179,11 @@ function _Component(){
   getComponentData();
 }
 function _Preview(){
-
+  var domView = $('#viewContent');
   return {
-    loadEditEvent : function(obj ,e){
-      console.log(obj);
+    onClickEle : function(obj ,e){
+      domView.find('[contenteditable="true"]').removeAttr('contenteditable');
+      $(obj).attr('contenteditable' ,'true');
     }
   }
 }
@@ -260,7 +268,7 @@ function checkNode(evt) {
 $('.view_content').on('click', '*', function(evt) {
   checkNode(evt)
   lastTarget = $(this);
-  ObjPreview.loadEditEvent(this ,evt);
+  ObjPreview.onClickEle(this ,evt);
   evt.stopPropagation();
   checkType($(this).attr('type'), this)
 })
