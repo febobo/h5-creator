@@ -37,15 +37,23 @@ exports.loadfile = function*() {
           },
           body: buffer
         }, function(e, r, res) {
-          var res = JSON.parse(res)
-          done(null, {
-            res: res
-          })
+          if(res != undefined && res){
+            done(null, {res: JSON.parse(res) })
+          }else{
+            // 出错！
+            done(null, {err: e })
+          }
+          
         })
       })
     }
   }
-
+  if(result.err){
+    return this.body = {
+      code: -1,
+      data: result.err
+    }
+  }
 	if(result.res.code){
 		var res = result.res.body.thumbnail0;
 		var sourcefile = {
