@@ -24,7 +24,7 @@ exports.preview = function*() {
       data: {
         content: pageContent.content,
         id: pageContent._id,
-        link: 'http://192.168.1.13:3001/preview?id=' + pageContent._id,
+        link: 'http://192.168.1.10:3001/preview?id=' + pageContent._id,
         name: pageContent.name
       }
     }
@@ -37,7 +37,7 @@ exports.preview = function*() {
     data: {
       content: newObj.content,
       id: newObj._id,
-      link: 'http://192.168.1.13:3001/preview?id=' + newObj._id,
+      link: 'http://192.168.1.10:3001/preview?id=' + newObj._id,
       name: newObj.name
     }
   }
@@ -83,7 +83,7 @@ exports.getPagelist = function*() {
       data: {
         content: pageContent.content,
         id: pageContent._id,
-        link: 'http://192.168.1.13:3001/preview?id=' + pageContent._id,
+        link: 'http://192.168.1.10:3001/preview?id=' + pageContent._id,
         name: pageContent.name
       }
     }
