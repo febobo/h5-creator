@@ -36,9 +36,10 @@
   border-right: 1px solid #ccc;
 }
 .main .menu .tep_main ul.typeSelect {
-  width: 100%;
+  width: 300px;
   display: flex;
   align-items: center;
+  overflow-y:auto;
 }
 .main .menu .tep_main ul.typeSelect li {
   padding: 18px 0;
@@ -46,6 +47,7 @@
   flex: 1;
   cursor: pointer;
   transition: background 1.5s;
+  min-width: 75px;
 }
 .main .menu .tep_main ul.typeSelect li img {
   margin-bottom: 3px;
@@ -118,10 +120,23 @@
 }
 .view-tmp .view_content {
   overflow-y: scroll;
+  
+}
+.view-tmp .view_content >*{
+  border:1px solid #e4e4e4;
 }
 .view-tmp .view_content >*:hover {
   border: 1px dashed #12b0eb;
   cursor: move;
+}
+body ,[contenteditable="false"] * {
+  moz-user-select: -moz-none;
+-moz-user-select: none;
+-o-user-select:none;
+-khtml-user-select:none;
+-webkit-user-select:none;
+-ms-user-select:none;
+user-select:none;
 }
 .edit_content {
   padding: 10px;
