@@ -68,7 +68,7 @@ label {
   background: #dfdfdf;
   color: #de8b29;
 }
-[auth]{display: none!important;}
+/*[auth]{display: none!important;}*/
 .tmp_content{
   width:300px;
 }
@@ -76,3 +76,4 @@ label {
     border-bottom: 1px dashed #ddd;
         padding: 1em 0;
 }
+.hidden{display: none;}

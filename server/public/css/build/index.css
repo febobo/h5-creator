@@ -204,10 +204,24 @@ user-select:none;
   top: 0;
   opacity: 0;
 }
+#eleGoodsInfo{display: none;}
 
 
 
-
+/* 表头固定内容滚动的表格  */
+.modal-goodslist{margin:0 0 20px;line-height:18px;}
+.modal-goodslist .scroll{max-height:306px;border:1px solid #ddd;border-top:0;overflow-y:auto;}
+.modal-goodslist table{width:100%;table-layout:fixed;}
+.modal-goodslist th,.modal-goodslist td{padding:10px;border:1px solid #ddd;}
+.modal-goodslist th{font-weight:bold;background:#eee;}
+.modal-goodslist thead th:last-child,.modal-goodslist tbody td:last-child{width:auto;}
+.modal-goodslist tbody tr:nth-child(2n){background:#fafafa;}
+.modal-goodslist tbody tr:first-child td{border-top:0;}
+.modal-goodslist tbody tr:last-child td{border-bottom:0;}
+.modal-goodslist tbody tr td:first-child{border-left:0;}
+.modal-goodslist tbody tr td:first-child img{width:100px;}
+.modal-goodslist tbody tr td:last-child{border-right:0;}
+.modal-goodslist tbody tr td:last-child span{border-bottom: 1px solid blue;color: blue;cursor: pointer;}
 
 
 
