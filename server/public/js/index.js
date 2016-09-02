@@ -155,10 +155,6 @@ function _Component(){
       accepts: function (el, target) {
         return target !== leftSource
       }
-    }).on('drag', function (el) {
-      el.className = el.className.replace('ex-moved', '');
-    }).on('drop', function (el) {
-      el.className += ' ex-moved';
     });
 
 
