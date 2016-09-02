@@ -78,11 +78,18 @@ var utils = {
   }
 }
 
+
+//========================================================================wangxiaowei begin
+var ObjComponent = ObjPreview = null;
+
 // 组件对象，包括组建事件，增删改查等
 function _Component(){
   // 一些基本的dom对象
   var domUlTypeSelect   = $('#ul_typeSelect') ,
-      domUlTypeSelectC  = $('#ul_typeSelectContent');
+      domUlTypeSelectC  = $('#ul_typeSelectContent') ,
+
+      domAllTypeLi = null,
+      domAllContent =  null;
 
   var componentsData = {};
   var componentTypes = [
@@ -137,10 +144,10 @@ function _Component(){
     domUlTypeSelectC.html(htmlContent.join(''));
     loadEvent();
   },
+  // 加载完dom节点后，加载该节点的事件
   loadEvent = function(){
     var leftSource = document.querySelector('.title_temp') ,
         rightSource = document.querySelector('#viewContent');
-    // dragula([domUlTypeSelectC.children('.title_temp'), domEditViewContent]);
     dragula([leftSource, rightSource] ,{
       copy: function (el, source) {
         return source === leftSource
@@ -149,20 +156,46 @@ function _Component(){
         return target !== leftSource
       }
     });
+
+
+
+    domAllContent   = domUlTypeSelectC.children('[class$=_temp]');
+    domAllTypeLi    = domUlTypeSelect.children('li');
+    // Tab 切换
+    domUlTypeSelect.children('li').on('click' ,function(){
+      var _this = $(this);
+      domAllContent.hide();
+      domAllTypeLi.removeClass('active');
+      _this.addClass('active');
+      domUlTypeSelectC.children('.'+_this.attr('data')+'_temp').show();
+    })
   }
 
   // 执行加载
   getComponentData();
 }
+function _Preview(){
+  var domView = $('#viewContent');
+  return {
+    onClickEle : function(obj ,e){
+      domView.find('[contenteditable="true"]').removeAttr('contenteditable');
+      $(obj).attr('contenteditable' ,'true');
+    }
+  }
+}
+
+ObjPreview = _Preview();
+//========================================================================wangxiaowei end
+
 
 // 如果首次url中存在id则拉取数据
 if (utils.getQueryString('id')) {
   utils.fetch('/page/preview?id=' + utils.getQueryString('id'), 'get', '', function(res) {
     $('.view_content').html(res.content)
-    _Component();
+    ObjComponent = _Component();
   })
 }else{
-  _Component();
+  ObjComponent = _Component();
 }
 
 // 记录最后一次操作的元素
@@ -231,6 +264,7 @@ function checkNode(evt) {
 $('.view_content').on('click', '*', function(evt) {
   checkNode(evt)
   lastTarget = $(this);
+  ObjPreview.onClickEle(this ,evt);
   evt.stopPropagation();
   checkType($(this).attr('type'), this)
 })
@@ -391,24 +425,24 @@ $('.deleteComponent').on('click', function() {
 })
 
 // 点击元素改变视图
-var viewSwitch = function(light, data) {
-  light.addClass('active').siblings().removeClass('active');
-  var activeSwitch = function(ele) {
-    $.each($(ele), function(k, v) {
-      if ($(v).attr('data') == data) {
-        $(v).show().siblings().hide();
-      }
-    })
-  }
-  activeSwitch('.tmp_content >div')
-    // activeSwitch('.edit_content >div')
-}
+// var viewSwitch = function(light, data) {
+//   light.addClass('active').siblings().removeClass('active');
+//   var activeSwitch = function(ele) {
+//     $.each($(ele), function(k, v) {
+//       if ($(v).attr('data') == data) {
+//         $(v).show().siblings().hide();
+//       }
+//     })
+//   }
+//   activeSwitch('.tmp_content >div')
+//     // activeSwitch('.edit_content >div')
+// }
 
-// view 切换
-$('.typeSelect li').on('click', function() {
-  var data = $(this).attr('data');
-  viewSwitch($(this), data)
-})
+// // view 切换
+// $('.typeSelect li').on('click', function() {
+//   var data = $(this).attr('data');
+//   viewSwitch($(this), data)
+// })
 
 $('#eleSize').html(createSizeOption(12, 42))
 
