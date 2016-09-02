@@ -308,7 +308,6 @@ var editTitle = {
   },
   changeUrl: function() {
     $('#upload-file').on('change', function(evt) {
-      console.log(this)
       var file = this.files[0];
       if (!/image\/\w+/.test(file.type)) {
         alert("文件必须为图片！");
