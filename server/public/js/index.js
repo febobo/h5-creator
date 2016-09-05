@@ -315,14 +315,14 @@ function _Preview(){
       checkType($(this).attr('type'), this)
     })
 
-    domView.on('click', '>:not([componenttype="goods"]) *', function(evt) { 
+    domView.on('click', '>:not([componenttype="goods"]) *', function(evt) {
       ObjGoodsComponent.hideGoodsBtn();
       checkNode(evt);
       lastTarget = $(this);
       ObjPreview.onClickEle(this ,evt);
       evt.stopPropagation();
       checkType($(this).attr('type'), this)
-    }) 
+    })
   }
 
   loadEvent();
@@ -341,11 +341,18 @@ ObjPreview = _Preview();
 ObjGoodsComponent = _GoodsComponent();
 //========================================================================wangxiaowei end
 
+// 填充视图
+function fillView(res){
+	$('#pageTitle').val(res.name);
+	$('#pageTm').attr('src',res.thumbnail_url);
+	$('#pageDesc').val(res.desc)
+	$('.view_content').html(res.content)
+}
 
 // 如果首次url中存在id则拉取数据
 if (utils.getQueryString('id')) {
   utils.fetch('/page/preview?id=' + utils.getQueryString('id'), 'get', '', function(res) {
-    $('.view_content').html(res.content)
+		fillView(res);
     ObjComponent = _Component();
   })
 }else{
@@ -367,7 +374,6 @@ function textView(ele) {
   $('#eleMargin').val(styles.margin);
   $('#elePadding').val(styles.padding);
   $('#eleColor').val(utils.rgbToHex(styles.color));
-
   $.each($('#eleSize > *'), function(k, v) {
     if ($(v).attr('value') == styles.fontSize) {
       $(v).attr('selected', true).siblings().removeAttr('selected')
@@ -401,6 +407,11 @@ $('.tmp_content').on('click', ' > * > *', function(evt) {
   $('.view_content').append(_clone);
   checkType($(this).attr('type'), this);
   evt.stopPropagation;
+})
+
+$('.tm img').on('click' , function(evt){
+	lastTarget = $(this);
+	checkNode(evt);
 })
 
 function checkNode(evt) {
@@ -439,6 +450,36 @@ Date.prototype.Format = function(fmt) { //author: meizz
   return fmt;
 }
 
+// 上传图片调用
+function uploadFile(target , cb){
+		var file = target.files[0];
+		if (!/image\/\w+/.test(file.type)) {
+			alert("文件必须为图片！");
+			return false;
+		}
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function(e) {
+
+			var formData = new FormData();
+			formData.append('file', file)
+			$.ajax({
+				url: 'http://127.0.0.1:3001/file/loadfile',
+				type: 'POST',
+				data: formData,
+				async: false,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data) {
+					cb && cb(e,data);
+				},
+				error: function() {
+					$("#spanMessage").html("与服务器通信发生错误");
+				}
+			});
+		}
+}
 // 标题编辑
 var editTitle = {
   init: function() {
@@ -452,42 +493,18 @@ var editTitle = {
     this.changeUrl();
   },
   changeUrl: function() {
-    $('#upload-file').on('change', function(evt) {
-      var file = this.files[0];
-      if (!/image\/\w+/.test(file.type)) {
-        alert("文件必须为图片！");
-        return false;
-      }
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function(e) {
-
-        var formData = new FormData();
-        formData.append('file', file)
-        $.ajax({
-          url: 'http://127.0.0.1:3001/file/loadfile',
-          type: 'POST',
-          data: formData,
-          async: false,
-          cache: false,
-          contentType: false,
-          processData: false,
-          success: function(data) {
-            $(lastTarget).attr('src', e.srcElement.result)
-            var str = '<li><div class="img_box" style="height:100px">' +
-              '<img src="' + data.data.url + '" alt="' + data.data.name + '">' +
-              '</div>' +
-              '<div>' +
-              '<span>' + data.data.name + '</span>' +
-              '</div>' +
-              '</li>'
-            $('#images_list_content').prepend(str);
-          },
-          error: function() {
-            $("#spanMessage").html("与服务器通信发生错误");
-          }
-        });
-      }
+    $('.upload-file').on('change', function(evt) {
+			uploadFile(this,function(e,data){
+				$(lastTarget).attr('src', e.srcElement.result)
+				var str = '<li><div class="img_box" style="height:100px">' +
+					'<img src="' + data.data.url + '" alt="' + data.data.name + '">' +
+					'</div>' +
+					'<div>' +
+					'<span>' + data.data.name + '</span>' +
+					'</div>' +
+					'</li>'
+				$('#images_list_content').prepend(str);
+			})
     })
   },
   changeText: function() {
@@ -568,26 +585,6 @@ $('.deleteComponent').on('click', function() {
   $(lastTarget).remove();
 })
 
-// 点击元素改变视图
-// var viewSwitch = function(light, data) {
-//   light.addClass('active').siblings().removeClass('active');
-//   var activeSwitch = function(ele) {
-//     $.each($(ele), function(k, v) {
-//       if ($(v).attr('data') == data) {
-//         $(v).show().siblings().hide();
-//       }
-//     })
-//   }
-//   activeSwitch('.tmp_content >div')
-//     // activeSwitch('.edit_content >div')
-// }
-
-// // view 切换
-// $('.typeSelect li').on('click', function() {
-//   var data = $(this).attr('data');
-//   viewSwitch($(this), data)
-// })
-
 $('#eleSize').html(createSizeOption(12, 42))
 
 editTitle.init();
@@ -608,14 +605,27 @@ $('#phoneView').on('click', function() {
   if (!$('.view_content').html()) return alert('好像没有什么可查看的噢');
   if (!$('#pageTitle').val()) {
     $('#pageTitle').addClass('tips');
-    return alert('先取个好听的名字才能保存噢');
+    return alert('标题不能为空');
   }
-  $('#pageTitle').removeClass('tips');
+	$('#pageTitle').removeClass('tips');
+	if (!$('#pageDesc').val()) {
+    $('#pageDesc').addClass('tips');
+    return alert('描述不能为空');
+  }
+	$('#pageDesc').removeClass('tips');
+	if ($('#pageTm').attr('src').indexOf('placeholder') !== -1) {
+    $('#pageTm').addClass('tips');
+    return alert('缩略图不能为空');
+  }
+	$('#pageTm').removeClass('tips');
+
   utils.fetch('/page/preview', 'post', {
     "create_time": new Date(),
     "content": $('.view_content').html(),
     "name": $('#pageTitle').val(),
-    "id": utils.getQueryString('id')
+    "id": utils.getQueryString('id'),
+		"thumbnail_url" : $('#pageTm').attr('src'),
+		"desc" : $('#pageDesc').val()
   }, function(res) {
     window.history.pushState(null, null, '?id=' + res.id);
     $('#previewModal').modal('show')
@@ -683,7 +693,7 @@ var initHistoryTmp = {
       var _id = $(this).attr('data-id')
       utils.fetch('/page/preview?id=' + _id, 'get', '', function(res) {
         window.history.pushState(null, null, '?id=' + res.id);
-        $('#pageTitle').val(res.name);
+				fillView(res);
         $('.view_content').html(res.content)
       })
     })

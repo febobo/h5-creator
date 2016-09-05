@@ -18,6 +18,8 @@ exports.preview = function*() {
     });
     pageContent.content = body.content;
     pageContent.name = body.name;
+		pageContent.thumbnail_url = body.thumbnail_url;
+		pageContent.desc = body.desc;
     pageContent.save();
     return this.body = {
       code: 1,
@@ -71,7 +73,7 @@ exports.delete = function*() {
 exports.getPagelist = function*() {
   var ctx = this;
   var body = ctx.request.query;
-  var limit = 20;
+  var limit = (body.limit * 1) || 20;
   var start = (body.page || 0) * limit;
   var pageContent;
   if (body.id) {
@@ -84,7 +86,9 @@ exports.getPagelist = function*() {
         content: pageContent.content,
         id: pageContent._id,
         link: 'http://192.168.1.10:3001/preview?id=' + pageContent._id,
-        name: pageContent.name
+        name: pageContent.name,
+				thumbnail_url : pageContent.thumbnail_url,
+				desc : pageContent.desc
       }
     }
   }
