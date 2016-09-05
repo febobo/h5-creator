@@ -57,14 +57,17 @@ var utils = {
         })
       })
     }
-    return fetch(config.url + url, {
+    if(url.indexOf('http') < 0){
+      url  = config.url + url;
+    }
+    return fetch(url, {
       headers: {
         "Content-Type": "application/json",
       }
     }).then(function(res) {
       return res.json().then(function(json) {
         if (json.code) {
-          return successCb && successCb(json.data)
+          return successCb && successCb(json.data || json.body)
         }
         errerCb && errerCb(json.msg)
       })
@@ -78,9 +81,10 @@ var utils = {
   }
 }
 
-
+// 记录最后一次操作的元素
+var lastTarget;
 //========================================================================wangxiaowei begin
-var ObjComponent = ObjPreview = null;
+var ObjComponent = ObjPreview = ObjGoodsComponent = null;
 
 // 组件对象，包括组建事件，增删改查等
 function _Component(){
@@ -94,8 +98,9 @@ function _Component(){
   var componentsData = {};
   var componentTypes = [
     {name:'标题' ,key:'title'   ,img:'text.png'},
-    {name:'图片' ,key:'image'   ,img:'image.png'},
     {name:'段落' ,key:'chapter' ,img:'card.png'},
+    {name:'商品' ,key:'goods'   ,img:'titlecart.png'},
+    {name:'图片' ,key:'image'   ,img:'image.png'},
     {name:'图文' ,key:'mashup'  ,img:'titlecart.png'}
   ]
   // 一些基本的方法
@@ -168,14 +173,160 @@ function _Component(){
       domAllTypeLi.removeClass('active');
       _this.addClass('active');
       domUlTypeSelectC.children('.'+_this.attr('data')+'_temp').show();
-    })
+    });
+
   }
 
   // 执行加载
   getComponentData();
 }
+
+// 商品组件比较特殊，单独写出来
+function _GoodsComponent(){
+  var domEditGoodsLayout  = $('#eleGoodsInfo') ,
+      domInputGoodsName   = domEditGoodsLayout.find('.goodsname') ,
+
+      domGridGoods        = null,
+
+      // 当前所选择的商品组件
+      nodeGoodsComponent  = null,
+
+      domModalGoodsInfo   = null
+
+  var getGoodsData = function(param ,callback){
+    // 获取一个商品的html
+    var getGoodsItem = function(goods){
+      var item = '';
+      item += '<tr>';
+      item += '<td><img src="'+goods.img.url+'" /></td>';
+      item += '<td>'+goods.name+'</td>';
+      item += '<td>'+goods.goodsDetail.detail+'</td>';
+      item += '<td><span onClick="ObjGoodsComponent.setGoodsToComponent(\''+goods.id+'\');">选择此商品</span></td>';
+      item += '</tr>';
+      return item;
+    },
+    // 获取整个商品的html
+    getGoodsHtml = function(data){
+      // data = [1,3,4,4,5,1,6,1,1,1,1];
+      var html = ['<tbody>'];
+      for(var i=0,len=data.length,item;i<len;i++){
+        item = data[i];
+        html.push(getGoodsItem(item));
+      }
+      html.push('</tbody>')
+      return html.join('');
+    },
+    getData = function(_param){
+      var e = {
+          "body": {
+              "goodsList": [
+                  {"categoryId": 4, "desc": "测试苹果", "goodsDetail": {"detail": "1山东栖霞红富士苹果 详情 ", "id": 1 }, "id": 1, "img": {"id": 1, "url": "http://imgs.wn518.com/upimages/hou-tai/2016-04-07/afc7d83c91f9e13c723b648559c6552f_1_0123_0_640_440_1.jpg"}, "lastModified": 1472610517000, "name": "1山东 栖霞 红富士 苹果", "price": 3, "shopId": 1, "status": true, "stock": 10, "type": 1 },
+                  {"categoryId": 4, "desc": "测试苹果", "goodsDetail": {"detail": "2山东栖霞红富士苹果 详情 ", "id": 1 }, "id": 2, "img": {"id": 1, "url": "http://imgs.wn518.com/upimages/hou-tai/2016-04-07/afc7d83c91f9e13c723b648559c6552f_1_0123_0_640_440_1.jpg"}, "lastModified": 1472610517000, "name": "2山东 栖霞 红富士 苹果", "price": 3, "shopId": 1, "status": true, "stock": 10, "type": 1 },
+                  {"categoryId": 4, "desc": "测试苹果", "goodsDetail": {"detail": "3山东栖霞红富士苹果 详情 ", "id": 1 }, "id": 3, "img": {"id": 1, "url": "http://imgs.wn518.com/upimages/hou-tai/2016-04-07/afc7d83c91f9e13c723b648559c6552f_1_0123_0_640_440_1.jpg"}, "lastModified": 1472610517000, "name": "3山东 栖霞 红富士 苹果", "price": 3, "shopId": 1, "status": true, "stock": 10, "type": 1 },
+                  {"categoryId": 4, "desc": "测试苹果", "goodsDetail": {"detail": "4山东栖霞红富士苹果 详情 ", "id": 1 }, "id": 4, "img": {"id": 1, "url": "http://imgs.wn518.com/upimages/hou-tai/2016-04-07/afc7d83c91f9e13c723b648559c6552f_1_0123_0_640_440_1.jpg"}, "lastModified": 1472610517000, "name": "4山东 栖霞 红富士 苹果", "price": 3, "shopId": 1, "status": true, "stock": 10, "type": 1 },
+                  {"categoryId": 4, "desc": "测试苹果", "goodsDetail": {"detail": "5山东栖霞红富士苹果 详情 ", "id": 1 }, "id": 5, "img": {"id": 1, "url": "http://imgs.wn518.com/upimages/hou-tai/2016-04-07/afc7d83c91f9e13c723b648559c6552f_1_0123_0_640_440_1.jpg"}, "lastModified": 1472610517000, "name": "5山东 栖霞 红富士 苹果", "price": 3, "shopId": 1, "status": true, "stock": 10, "type": 1 },
+                  {"categoryId": 4, "desc": "测试苹果", "goodsDetail": {"detail": "6山东栖霞红富士苹果 详情 ", "id": 1 }, "id": 6, "img": {"id": 1, "url": "http://imgs.wn518.com/upimages/hou-tai/2016-04-07/afc7d83c91f9e13c723b648559c6552f_1_0123_0_640_440_1.jpg"}, "lastModified": 1472610517000, "name": "6山东 栖霞 红富士 苹果", "price": 3, "shopId": 1, "status": true, "stock": 10, "type": 1 },
+                  {"categoryId": 4, "desc": "测试苹果", "goodsDetail": {"detail": "7山东栖霞红富士苹果 详情 ", "id": 1 }, "id": 7, "img": {"id": 1, "url": "http://imgs.wn518.com/upimages/hou-tai/2016-04-07/afc7d83c91f9e13c723b648559c6552f_1_0123_0_640_440_1.jpg"}, "lastModified": 1472610517000, "name": "7山东 栖霞 红富士 苹果", "price": 3, "shopId": 1, "status": true, "stock": 10, "type": 1 }
+              ]
+          },
+          "code": 1,
+          "message": "成功"
+      };
+      domGridGoods = $('#grid_goods');
+      domModalGoodsInfo = $('#modalGoodsInfo');
+      if(e.code < 0){
+        domGridGoods.html('');
+      }else{
+        domGridGoods.html(getGoodsHtml(e.body.goodsList));
+      }
+    }
+    getData(param);
+  },
+
+  // 根据所选的值，将值填充到组件中
+  setGoodsToComponent = function(goodsId){
+    var goodsInfo = {
+        "body": {
+            "categoryInfo": [{"id": 3, "name": "温带水果", "pId": 0 }, {"id": 4, "name": "苹果", "pId": 3 } ],
+            "goodsDetail": {"detail": "山东栖霞红富士苹果 详情 ", "id": 1 },
+            "goodsInfo": {"categoryId": 4, "desc": "测试苹果", "id": 1, "lastModified": 1472610517000, "name": "山东 栖霞 红富士 苹果", "shopId": 1, "status": true, "stock": 10, "type": 1 },
+            "imgs": [{"id": 1, "url": "http://imgs.wn518.com/upimages/hou-tai/2016-04-07/afc7d83c91f9e13c723b648559c6552f_1_0123_0_640_440_1.jpg"} ],
+            "price": {"id": 1, "salePrice": 3, "shopPrice": 4 }
+        },
+        "code": 1,
+        "message": "成功"
+    }
+    // utils.fetch(config.goodsUrl + '/goods/detail?param={"id":"'+goodsId+'"}', 'get', '', function(res) {
+    //   console.log(res);
+    // })
+    domModalGoodsInfo.modal('hide');
+    if(goodsInfo.code < 0){
+      console.error('获取商品详情接口失败');
+      return;
+    }
+    goodsInfo = goodsInfo.body;
+    nodeGoodsComponent.find('[goodskey="name"]').text(goodsInfo.goodsInfo.name);
+    nodeGoodsComponent.find('[goodskey="img"]').attr('src',goodsInfo.imgs[0].url);
+  }
+
+  setTimeout(getGoodsData ,200);
+  return {
+    // 没有商品名称，则显示填充商品的按钮。有则显示商品的名称加修改\
+    // 先遍历到最外层的[componenttype="goods"]，然后find[goodskey="name"]
+    setGoodsInfo : function(je){
+      var domParents  = je.parents('[componenttype="goods"]') ,
+          goodsName   = domParents.find('[goodskey="name"]').text() ,
+          goodsImg    = domParents.find('[goodskey="img"]').attr('src');
+
+      nodeGoodsComponent = domParents;
+
+      domInputGoodsName.val(goodsName);
+      domEditGoodsLayout.show();
+    },
+    // 隐藏右侧的商品按钮
+    hideGoodsBtn : function(){
+      domEditGoodsLayout.hide();
+      nodeGoodsComponent = null;
+    },
+    setGoodsToComponent : function(goodsId){
+      setGoodsToComponent(goodsId);
+    }
+  }
+}
+
+
 function _Preview(){
   var domView = $('#viewContent');
+
+  // 加载一些基本事件
+  var loadEvent = function(){
+
+
+
+
+    // 预览布局中，单击组件的事件
+    domView.on('click', '[componenttype="goods"] *', function(evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      checkNode(evt);
+      lastTarget = $(this);
+      ObjGoodsComponent.setGoodsInfo($(this));
+      ObjPreview.onClickEle(this ,evt);
+      checkType($(this).attr('type'), this)
+    })
+
+    domView.on('click', '>:not([componenttype="goods"]) *', function(evt) { 
+      ObjGoodsComponent.hideGoodsBtn();
+      checkNode(evt);
+      lastTarget = $(this);
+      ObjPreview.onClickEle(this ,evt);
+      evt.stopPropagation();
+      checkType($(this).attr('type'), this)
+    }) 
+  }
+
+  loadEvent();
+
   return {
     onClickEle : function(obj ,e){
       domView.find('[contenteditable="true"]').removeAttr('contenteditable');
@@ -184,7 +335,10 @@ function _Preview(){
   }
 }
 
+
+
 ObjPreview = _Preview();
+ObjGoodsComponent = _GoodsComponent();
 //========================================================================wangxiaowei end
 
 
@@ -198,8 +352,7 @@ if (utils.getQueryString('id')) {
   ObjComponent = _Component();
 }
 
-// 记录最后一次操作的元素
-var lastTarget;
+
 // 将选中的元素样式添加至可视区
 var NODE = ['IMG'];
 
@@ -260,14 +413,6 @@ function checkNode(evt) {
     $('#eleText').parents('.form-group ').show();
   }
 }
-
-$('.view_content').on('click', '*', function(evt) {
-  checkNode(evt)
-  lastTarget = $(this);
-  ObjPreview.onClickEle(this ,evt);
-  evt.stopPropagation();
-  checkType($(this).attr('type'), this)
-})
 
 function createSizeOption(min, max) {
   var str = '';
