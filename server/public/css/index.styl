@@ -53,13 +53,21 @@ $f4=#f4f4f4
 .image_temp
 		img
 				max-width: 100%
+.dsec
+		position: absolute
+		top: 0
+		left:0
+		right:0
+		bottom: 0
+		width:100%
+		height:100%
 .watch_demo
 		position: absolute
 		left: 0
 		text-align: center
-		height : 60px
-		line-height: 60px
-		background: $f4
+		height : 120px
+		// line-height: 60px
+		background: #fafafa
 		width:100%
 		top: 1px
 		z-index: 2
@@ -67,7 +75,32 @@ $f4=#f4f4f4
 		align-items: center
 		justify-content: space-between
 		padding:0 10px
-
+		.content-dsec
+				// width: 60%
+				flex:1
+				display: flex
+				align-items: center
+				.tm
+						display: inline-block
+						width:80px
+						height:80px
+						position: relative;
+						img
+								@extend .dsec
+						input
+								opacity: 0
+								@extend .dsec
+				.desc
+						flex:1
+						margin-left: 10px
+						>input:first-child
+								margin-bottom: 5px
+			.btnGroup
+						width: 150px
+						margin-left:15px
+						>button
+								width: 130px
+								margin-bottom: 5px
 .tips{
 		border-color: #d9534f
     outline: 0
@@ -83,21 +116,26 @@ $f4=#f4f4f4
 .view-tmp
 		flex:1
 		display: flex
-		align-items: center
 		justify-content: center
 		position: relative
+		padding:150px 0 50px 0
+		overflow-y: scroll
 		.phone
 				position: relative;
+				width:340px
+				height:640px
+				overflow-y: scroll
+				box-shadow: 0 0 6px rgba(63,70,82,.5)
 				>img
 						width: 368px
 						height:648px
 				>div
-						width: 250px
-						height:430px
-						position: absolute
+						width: 100%
+						min-height: 640px
+						// position: absolute
 						left:60px
 						top:108px
-						background: #e4e4e4
+						background: #fafafa
 		.view_content
 				overflow-y: scroll
 				>*:hover
@@ -130,3 +168,63 @@ $f4=#f4f4f4
 				padding:10px
 				display: flex
 				justify-content: center
+#images_list_content
+		li
+				width : 47%
+				margin:1%
+				display: inline-block
+				text-align: center
+				border: 1px solid #fafafa
+				.img_box
+						display: flex
+						align-items: center
+						justify-content: center
+						overflow: hidden
+				img
+					 max-width: 100%
+.btn-file
+		position: relative
+		input
+				position: absolute
+				left: 0
+				right: 0
+				bottom: 0
+				top:0
+				opacity: 0;
+#eleGoodsInfo{display: none;}
+
+
+
+/* 表头固定内容滚动的表格  */
+.modal-goodslist{margin:0 0 20px;line-height:18px;}
+.modal-goodslist .scroll{max-height:306px;border:1px solid #ddd;border-top:0;overflow-y:auto;}
+.modal-goodslist table{width:100%;table-layout:fixed;}
+.modal-goodslist th,.modal-goodslist td{padding:10px;border:1px solid #ddd;}
+.modal-goodslist th{font-weight:bold;background:#eee;}
+.modal-goodslist thead th:last-child,.modal-goodslist tbody td:last-child{width:auto;}
+.modal-goodslist tbody tr:nth-child(2n){background:#fafafa;}
+.modal-goodslist tbody tr:first-child td{border-top:0;}
+.modal-goodslist tbody tr:last-child td{border-bottom:0;}
+.modal-goodslist tbody tr td:first-child{border-left:0;}
+.modal-goodslist tbody tr td:first-child img{width:100px;}
+.modal-goodslist tbody tr td:last-child{border-right:0;}
+.modal-goodslist tbody tr td:last-child span{border-bottom: 1px solid blue;color: blue;cursor: pointer;}
+.gu-mirror {
+  position:fixed !important;
+  margin:0 !important;
+  z-index:9999 !important;
+  opacity:.8;
+}
+.gu-hide {
+  display:none !important
+}
+.gu-unselectable {
+  cursor:pointer;
+  -webkit-user-select:none !important;
+  -moz-user-select:none !important;
+  -ms-user-select:none !important;
+  user-select:none !important;
+}
+.gu-transit {
+  opacity:.2;
+}

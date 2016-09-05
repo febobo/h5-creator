@@ -7,7 +7,13 @@ const pageSchema = new mongoose.Schema({
 	name : {
 		type : String
 	},
-	create_time : Date
+	thumbnail_url : {
+		type : String
+	},
+	desc : {
+		type : String
+	},
+	create_time : Date,
 })
 
 pageSchema.statics = {

@@ -1,86 +1,72 @@
 const ComponentModel = require('../model/components');
-const request = require('request');
-const crypto = require('crypto');
-const fs = require('fs');
-const parse = require('co-busboy');
-const os = require('os');
-const path = require('path');
 
-exports.add = function * (){
-	var ctx = this;
-	var body = ctx.request.body;
-	if(!body.name || !body.category || !body.content){
-		return this.body = {
-			code : 0,
-			msg : '缺少必要信息'
-		}
-	}
-	const result = yield ComponentModel.findOne({'name':body.name})
-	if(result){
-		return this.body = {
-			code : 0,
-			msg : '名称已存在'
-		}
-	}
-
-	body.create_time = new Date();
-	var component = new ComponentModel(body);
-	var newObj = yield component.save();
-	return this.body = {
-		code : 1,
-		msg : '添加成功'
-	}
-}
-
-exports.loadfile = function * (){
-	if (!this.request.is('multipart/*')) return yield next
-	var parts = parse(this);
-	var part;
-	while (part = yield parts) {
-    var stream = fs.createWriteStream(path.join('./public/static/upload/images/', Date.parse(new Date()).toString(),Math.random().toString()));
-    part.pipe(stream)
-    console.log('uploading %s -> %s', part.filename, stream.path);
+exports.add = function*() {
+  var ctx = this;
+  var body = ctx.request.body;
+  if (!body.name || !body.category || !body.content) {
+    return this.body = {
+      code: 0,
+      msg: '缺少必要信息'
+    }
+  }
+  const result = yield ComponentModel.findOne({
+    'name': body.name
+  })
+  if (result) {
+    return this.body = {
+      code: 0,
+      msg: '名称已存在'
+    }
   }
 
+  body.create_time = new Date();
+  var component = new ComponentModel(body);
+  var newObj = yield component.save();
+  return this.body = {
+    code: 1,
+    msg: '添加成功'
+  }
 }
 
 exports.get = function * (){
 	var ctx = this;
 	var body = ctx.request.query;
-	var limit = 30;
+	var limit = 100;
 	var start = (body.page || 0) * limit;
 
-	if(body.id){
-		var componentContent	= yield ComponentModel.findOne({"_id":body.id});
+  if (body.id) {
+    var componentContent = yield ComponentModel.findOne({
+      "_id": body.id
+    });
 
-		if(!componentContent){
-			return this.body = {
-				code : 1,
-				msg : '找不到该条记录'
-			}
-		}
+    if (!componentContent) {
+      return this.body = {
+        code: 1,
+        msg: '找不到该条记录'
+      }
+    }
 
-		return this.body = {
-			code : 1,
-			data : {
-				content : componentContent.content,
-				id : componentContent._id,
-				title : componentContent.title,
-				category : componentContent.category
-			}
-		}
-	}
+    return this.body = {
+      code: 1,
+      data: {
+        content: componentContent.content,
+        id: componentContent._id,
+        title: componentContent.title,
+        category: componentContent.category
+      }
+    }
+  }
 
-	var result = yield ComponentModel.find({}).skip(start).limit(limit).sort('-create_time');
-	var count = yield ComponentModel.count();
-	return this.body = {
-		code : 1,
-		data : {
-			lists : result ? result : [],
-			count : count ? count : 0
-		},
-		msg : 'ok'
-	}
+  var result = yield ComponentModel.find({}).skip(start).limit(limit).sort('-create_time');
+  var count = yield ComponentModel.count();
+  return this.body = {
+    code: 1,
+    data: {
+      lists: result ? result : [],
+      count: count ? count : 0
+    },
+    msg: 'ok'
+  }
 }
 
 exports.delete = function*() {
