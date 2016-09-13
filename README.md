@@ -4,6 +4,8 @@
 # MindMap
 ![MindMap](https://cloud.githubusercontent.com/assets/9276376/17545961/51127d34-5f12-11e6-9b21-23f05f798754.png)
 
+# View 
+![View](https://cloud.githubusercontent.com/assets/9276376/18481245/1fe8e9ca-7a0e-11e6-8e04-00fbff9d412d.png)
 
 # Install
 ```
